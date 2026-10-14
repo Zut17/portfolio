@@ -1,0 +1,15 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "projects": "Projets",
+    "skills": "Compétences",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "home": {
+    "greeting": "Bonjour, je suis",
+    "role": "Analyste, concepteur-développeur web et mobile full stack junior",
+    "cta": "Voir mes projets"
+  }
+}
