@@ -15,6 +15,11 @@
     "available": "Open to opportunities",
     "greeting": "Hi, I'm",
     "role": "Junior Full Stack Web & Mobile Developer and Analyst",
+    "typed": [
+      "Web applications",
+      "Odoo modules and dashboards",
+      ".NET desktop applications"
+    ],
     "cta": "See my projects",
     "ctaContact": "Contact me",
     "stats": {
@@ -54,6 +59,7 @@
   },
   "contact": {
     "title": "Contact",
+    "heading": "Let's work together",
     "intro": "A project, an opportunity or a question? Write to me, I reply quickly.",
     "name": "Your name",
     "email": "Your email",
@@ -62,6 +68,7 @@
     "subjectPrefix": "Contact from the portfolio:"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "top": "Back to top"
   }
 }

@@ -15,6 +15,11 @@
     "available": "Ouvert aux opportunités",
     "greeting": "Bonjour, je suis",
     "role": "Analyste, concepteur-développeur web et mobile full stack junior",
+    "typed": [
+      "Applications web",
+      "Modules et dashboards Odoo",
+      "Applications de bureau .NET"
+    ],
     "cta": "Voir mes projets",
     "ctaContact": "Me contacter",
     "stats": {
@@ -54,6 +59,7 @@
   },
   "contact": {
     "title": "Contact",
+    "heading": "Travaillons ensemble",
     "intro": "Un projet, une opportunité ou une question ? Écrivez-moi, je réponds rapidement.",
     "name": "Votre nom",
     "email": "Votre email",
@@ -62,6 +68,7 @@
     "subjectPrefix": "Contact depuis le portfolio :"
   },
   "footer": {
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "top": "Retour en haut"
   }
 }

@@ -1,37 +1,44 @@
-import { motion } from "framer-motion";
+import { Globe, Monitor, Server, Wrench } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Section from "./Section";
+import SpotlightCard from "./SpotlightCard";
 import { skills } from "../data/skills";
 import type { SkillCategory } from "../types";
 
-const categories: SkillCategory[] = ["backend", "frontend", "desktop", "tools"];
+const categories: { key: SkillCategory; icon: typeof Server; span: string }[] = [
+  { key: "backend", icon: Server, span: "md:col-span-2" },
+  { key: "frontend", icon: Globe, span: "md:col-span-1" },
+  { key: "desktop", icon: Monitor, span: "md:col-span-1" },
+  { key: "tools", icon: Wrench, span: "md:col-span-2" },
+];
 
 export default function Skills() {
   const { t } = useTranslation();
 
   return (
     <Section id="skills" index="02" title={t("skills.title")}>
-      <div className="divide-y divide-border border-y border-border">
-        {categories.map((cat) => (
-          <motion.div
-            key={cat}
-            whileHover={{ x: 8 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="grid gap-4 py-8 md:grid-cols-12 md:items-baseline"
-          >
-            <h3 className="font-display text-2xl md:col-span-4">
-              {t(`skills.categories.${cat}`)}
+      <div className="grid gap-6 md:grid-cols-3">
+        {categories.map(({ key, icon: Icon, span }) => (
+          <SpotlightCard key={key} className={`p-7 ${span}`}>
+            <span className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary shadow-[0_0_20px_-4px_var(--color-primary)]">
+              <Icon size={20} />
+            </span>
+            <h3 className="mb-4 font-display text-xl font-semibold">
+              {t(`skills.categories.${key}`)}
             </h3>
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-lg text-muted md:col-span-8">
+            <div className="flex flex-wrap gap-2">
               {skills
-                .filter((s) => s.category === cat)
+                .filter((s) => s.category === key)
                 .map((s) => (
-                  <li key={s.name} className="transition hover:text-primary">
+                  <span
+                    key={s.name}
+                    className="rounded-full border border-border px-3 py-1 font-mono text-xs text-muted transition hover:border-accent hover:text-accent hover:shadow-[0_0_14px_-2px_var(--color-accent)]"
+                  >
                     {s.name}
-                  </li>
+                  </span>
                 ))}
-            </ul>
-          </motion.div>
+            </div>
+          </SpotlightCard>
         ))}
       </div>
     </Section>

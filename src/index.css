@@ -3,19 +3,19 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #0b1220;
-  --muted: #5b6678;
-  --card: #f6f8fb;
-  --border: #e3e8ef;
+  --background: #f7faff;
+  --foreground: #0a1226;
+  --muted: #52607a;
+  --card: #ffffff;
+  --border: #d9e4f5;
 }
 
 .dark {
-  --background: #0a0f1c;
-  --foreground: #f1f5f9;
-  --muted: #94a3b8;
-  --card: #111827;
-  --border: #1f2937;
+  --background: #050a18;
+  --foreground: #e8eefc;
+  --muted: #8a99b8;
+  --card: #0b1328;
+  --border: #1a2747;
 }
 
 @theme inline {
@@ -27,7 +27,45 @@
   --color-primary: dodgerblue;
   --color-accent: #ff8c1a;
   --font-sans: "Inter Variable", system-ui, sans-serif;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-display: "Space Grotesk Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
+@layer components {
+  .glass {
+    background: color-mix(in srgb, var(--card) 72%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--foreground) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 7%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(90deg, dodgerblue, #7cc4ff 45%, #ff8c1a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
 }
 
 html {
@@ -55,5 +93,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .animate-float,
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
   }
 }
