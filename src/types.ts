@@ -11,6 +11,7 @@ export interface Project {
   techStack: string[];
   demoUrl?: string;
   repoUrl?: string;
+  cover?: string;
 }
 
 export type SkillCategory = "backend" | "frontend" | "desktop" | "tools";

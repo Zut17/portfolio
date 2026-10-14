@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Code, ExternalLink } from "lucide-react";
 import Section from "./Section";
 import SpotlightCard from "./SpotlightCard";
+import ProjectCover from "./ProjectCover";
 import { useLocalized } from "../hooks/useLocalized";
 import { projects } from "../data/projects";
 import type { ProjectStatus } from "../types";
@@ -24,6 +25,11 @@ export default function Projects() {
             key={p.slug}
             className={`flex flex-col p-8 ${i === 0 ? "md:col-span-2" : ""}`}
           >
+            <ProjectCover
+              src={p.cover}
+              title={p.title}
+              className={`mb-6 ${i === 0 ? "aspect-[16/7]" : "aspect-video"}`}
+            />
             <div className="mb-6 flex items-center justify-between">
               <span className="font-mono text-sm text-primary">
                 {String(i + 1).padStart(2, "0")}
