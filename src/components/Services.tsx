@@ -11,7 +11,7 @@ export default function Services() {
   const l = useLocalized();
 
   return (
-    <Section id="services" title={t("services.title")}>
+    <Section id="services" index="04" title={t("services.title")}>
       <p className="mb-10 max-w-2xl text-muted">{t("services.intro")}</p>
       <div className="grid gap-6 md:grid-cols-3">
         {services.map((s) => {

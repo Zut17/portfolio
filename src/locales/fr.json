@@ -12,13 +12,24 @@
     "contact": "Contact"
   },
   "home": {
+    "available": "Ouvert aux opportunités",
     "greeting": "Bonjour, je suis",
     "role": "Analyste, concepteur-développeur web et mobile full stack junior",
-    "cta": "Voir mes projets"
+    "cta": "Voir mes projets",
+    "ctaContact": "Me contacter",
+    "stats": {
+      "projects": "projets mis en avant",
+      "indicators": "indicateurs dans le dashboard Camlait",
+      "internship": "stage en entreprise"
+    }
   },
   "about": {
     "title": "À propos",
-    "timeline": "Formation et parcours"
+    "timeline": "Formation et parcours",
+    "kind": {
+      "education": "Formation",
+      "work": "Expérience"
+    }
   },
   "skills": {
     "title": "Compétences",

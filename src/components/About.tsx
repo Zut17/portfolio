@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { GraduationCap, Briefcase } from "lucide-react";
 import Section from "./Section";
 import { useLocalized } from "../hooks/useLocalized";
 import { bio, timeline } from "../data/profile";
@@ -9,27 +8,31 @@ export default function About() {
   const l = useLocalized();
 
   return (
-    <Section id="about" title={t("about.title")}>
-      <p className="max-w-3xl text-lg leading-relaxed text-muted">{l(bio)}</p>
+    <Section id="about" index="01" title={t("about.title")}>
+      <div className="grid gap-16 md:grid-cols-12">
+        <p className="font-display text-2xl leading-snug md:col-span-7 md:text-3xl">
+          {l(bio)}
+        </p>
 
-      <h3 className="mb-6 mt-12 text-xl font-semibold">
-        {t("about.timeline")}
-      </h3>
-      <ol className="space-y-6 border-l-2 border-border pl-6">
-        {timeline.map((item, i) => {
-          const Icon = item.kind === "work" ? Briefcase : GraduationCap;
-          return (
-            <li key={i} className="relative">
-              <span className="absolute -left-[41px] top-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-background text-primary">
-                <Icon size={14} />
-              </span>
-              <h4 className="font-semibold">{l(item.title)}</h4>
-              <p className="text-sm text-accent">{item.organization}</p>
-              <p className="mt-1 text-muted">{l(item.description)}</p>
-            </li>
-          );
-        })}
-      </ol>
+        <div className="md:col-span-5">
+          <h3 className="mb-6 text-xs font-semibold uppercase tracking-widest text-muted">
+            {t("about.timeline")}
+          </h3>
+          <ol className="border-l border-border">
+            {timeline.map((item, i) => (
+              <li key={i} className="relative pb-10 pl-8 last:pb-0">
+                <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-accent" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+                  {t(`about.kind.${item.kind}`)}
+                </p>
+                <h4 className="mt-1 font-display text-xl">{l(item.title)}</h4>
+                <p className="text-sm text-muted">{item.organization}</p>
+                <p className="mt-2 text-muted">{l(item.description)}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
     </Section>
   );
 }

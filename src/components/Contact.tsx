@@ -40,7 +40,7 @@ export default function Contact() {
   ];
 
   return (
-    <Section id="contact" title={t("contact.title")}>
+    <Section id="contact" index="05" title={t("contact.title")}>
       <div className="grid gap-10 md:grid-cols-2">
         <div>
           <p className="mb-6 text-muted">{t("contact.intro")}</p>

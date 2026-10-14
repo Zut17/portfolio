@@ -1,34 +1,47 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
+import { useActiveSection } from "../hooks/useActiveSection";
 import type { Lang } from "../i18n";
 
-const items = ["home", "about", "projects", "skills", "services", "contact"];
+const items = ["home", "about", "skills", "projects", "services", "contact"];
 
 export default function Navbar({ lang }: { lang: Lang }) {
   const { t } = useTranslation();
   const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
+  const active = useActiveSection(items);
   const other: Lang = lang === "fr" ? "en" : "fr";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#home" className="text-lg font-bold text-primary">
-          HWZ
+        <a href="#home" className="font-display text-xl font-semibold">
+          HWZ<span className="text-accent">.</span>
         </a>
 
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-center gap-8 md:flex">
           {items.map((k) => (
-            <li key={k}>
+            <li key={k} className="relative">
               <a
                 href={`#${k}`}
-                className="text-sm text-muted transition hover:text-primary"
+                className={`text-sm transition ${
+                  active === k
+                    ? "text-foreground"
+                    : "text-muted hover:text-foreground"
+                }`}
               >
                 {t(`nav.${k}`)}
               </a>
+              {active === k && (
+                <motion.span
+                  layoutId="nav-underline"
+                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                />
+              )}
             </li>
           ))}
         </ul>
@@ -58,19 +71,23 @@ export default function Navbar({ lang }: { lang: Lang }) {
       </nav>
 
       {open && (
-        <ul className="flex flex-col gap-4 border-t border-border bg-background px-6 py-4 md:hidden">
+        <motion.ul
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col gap-5 border-t border-border bg-background px-6 py-6 md:hidden"
+        >
           {items.map((k) => (
             <li key={k}>
               <a
                 href={`#${k}`}
                 onClick={() => setOpen(false)}
-                className="text-sm text-muted hover:text-primary"
+                className="font-display text-2xl hover:text-primary"
               >
                 {t(`nav.${k}`)}
               </a>
             </li>
           ))}
-        </ul>
+        </motion.ul>
       )}
     </header>
   );

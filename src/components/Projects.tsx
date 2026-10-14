@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
-import { Code, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Code, ExternalLink } from "lucide-react";
 import Section from "./Section";
 import { useLocalized } from "../hooks/useLocalized";
 import { projects } from "../data/projects";
@@ -17,62 +16,77 @@ export default function Projects() {
   const l = useLocalized();
 
   return (
-    <Section id="projects" title={t("projects.title")}>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((p) => (
-          <motion.article
+    <Section id="projects" index="03" title={t("projects.title")}>
+      <div className="border-t border-border">
+        {projects.map((p, i) => (
+          <article
             key={p.slug}
-            whileHover={{ y: -6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="flex flex-col rounded-2xl border border-border bg-card p-6"
+            className="group grid gap-6 border-b border-border py-12 transition-colors hover:bg-card/60 md:grid-cols-12 md:px-4"
           >
-            <span
-              className={`mb-4 w-fit rounded-full border px-3 py-1 text-xs font-semibold ${statusStyle[p.status]}`}
-            >
-              {t(`projects.status.${p.status}`)}
+            <span className="font-display text-xl text-accent md:col-span-1">
+              {String(i + 1).padStart(2, "0")}
             </span>
-            <h3 className="text-xl font-bold">{p.title}</h3>
-            <p className="mt-1 text-sm text-accent">{l(p.role)}</p>
-            <p className="mt-3 flex-1 text-muted">{l(p.summary)}</p>
 
-            {p.techStack.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {p.techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-md bg-background px-2 py-1 text-xs text-muted"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            )}
+            <div className="md:col-span-5">
+              <h3 className="font-display text-3xl font-semibold transition-transform duration-300 group-hover:translate-x-2 group-hover:text-primary md:text-4xl">
+                {p.title}
+              </h3>
+              <p className="mt-2 text-sm text-muted">{l(p.role)}</p>
+              <span
+                className={`mt-4 inline-block rounded-full border px-3 py-1 text-xs font-semibold ${statusStyle[p.status]}`}
+              >
+                {t(`projects.status.${p.status}`)}
+              </span>
+            </div>
 
-            {(p.demoUrl || p.repoUrl) && (
-              <div className="mt-4 flex gap-4">
-                {p.repoUrl && (
-                  <a
-                    href={p.repoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1 text-sm hover:text-primary"
-                  >
-                    <Code size={14} /> Code
-                  </a>
-                )}
-                {p.demoUrl && (
-                  <a
-                    href={p.demoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1 text-sm hover:text-primary"
-                  >
-                    <ExternalLink size={14} /> Demo
-                  </a>
-                )}
-              </div>
-            )}
-          </motion.article>
+            <div className="md:col-span-6">
+              <p className="text-lg leading-relaxed text-muted">
+                {l(p.summary)}
+              </p>
+
+              {p.techStack.length > 0 && (
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {p.techStack.map((tech) => (
+                    <li
+                      key={tech}
+                      className="rounded-full border border-border px-3 py-1 text-xs text-muted"
+                    >
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {(p.demoUrl || p.repoUrl) && (
+                <div className="mt-5 flex items-center gap-5">
+                  {p.repoUrl && (
+                    <a
+                      href={p.repoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1 text-sm hover:text-primary"
+                    >
+                      <Code size={14} /> Code
+                    </a>
+                  )}
+                  {p.demoUrl && (
+                    <a
+                      href={p.demoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-1 text-sm hover:text-primary"
+                    >
+                      <ExternalLink size={14} /> Demo
+                    </a>
+                  )}
+                  <ArrowUpRight
+                    size={18}
+                    className="ml-auto text-muted transition group-hover:text-accent"
+                  />
+                </div>
+              )}
+            </div>
+          </article>
         ))}
       </div>
     </Section>
