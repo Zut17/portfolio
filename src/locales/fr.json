@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Henry William Zuteu | Développeur full stack",
+    "description": "Portfolio de Henry William Zuteu, analyste et développeur web et mobile full stack junior."
+  },
   "nav": {
     "home": "Accueil",
     "about": "À propos",

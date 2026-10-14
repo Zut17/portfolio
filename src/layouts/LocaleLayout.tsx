@@ -13,6 +13,10 @@ export default function LocaleLayout() {
     if (valid && lang) {
       i18n.changeLanguage(lang);
       document.documentElement.lang = lang;
+      document.title = i18n.t("meta.title", { lng: lang });
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute("content", i18n.t("meta.description", { lng: lang }));
     }
   }, [valid, lang, i18n]);
 
