@@ -11,5 +11,42 @@
     "greeting": "Hi, I'm",
     "role": "Junior Full Stack Web & Mobile Developer and Analyst",
     "cta": "See my projects"
+  },
+  "about": {
+    "title": "About",
+    "timeline": "Education and experience"
+  },
+  "skills": {
+    "title": "Skills",
+    "categories": {
+      "backend": "Backend and data",
+      "frontend": "Frontend",
+      "desktop": "Desktop applications",
+      "tools": "Tools"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "status": {
+      "in_progress": "In progress",
+      "deploying": "Deployment in progress",
+      "personal": "Personal project"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "intro": "I am available for freelance work. Here is what I can offer you."
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "A project, an opportunity or a question? Write to me, I reply quickly.",
+    "name": "Your name",
+    "email": "Your email",
+    "message": "Your message",
+    "send": "Send",
+    "subjectPrefix": "Contact from the portfolio:"
+  },
+  "footer": {
+    "rights": "All rights reserved."
   }
 }

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import LocaleLayout from "./layouts/LocaleLayout";
-import Home from "./pages/Home";
+import Landing from "./pages/Landing";
 
 function detectLang() {
   return navigator.language.toLowerCase().startsWith("en") ? "en" : "fr";
@@ -11,7 +11,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to={`/${detectLang()}`} replace />} />
       <Route path="/:lang" element={<LocaleLayout />}>
-        <Route index element={<Home />} />
+        <Route index element={<Landing />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
