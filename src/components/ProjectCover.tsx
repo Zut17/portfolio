@@ -13,7 +13,7 @@ export default function ProjectCover({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-border bg-card ${className}`}
+      className={`relative overflow-hidden rounded-2xl border border-border bg-background ${className}`}
     >
       {src && !failed ? (
         <img
@@ -21,14 +21,13 @@ export default function ProjectCover({
           alt={title}
           loading="lazy"
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/25 to-accent/25 font-display text-4xl font-bold text-foreground/70">
+        <div className="flex h-full w-full items-center justify-center text-4xl font-semibold text-muted">
           {title.slice(0, 2).toUpperCase()}
         </div>
       )}
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-background/50 to-transparent" />
     </div>
   );
 }

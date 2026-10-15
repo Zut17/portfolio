@@ -5,6 +5,7 @@ import Projects from "../components/Projects";
 import Services from "../components/Services";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import Marquee from "../components/Marquee";
 
 export default function Landing() {
   return (
@@ -13,6 +14,7 @@ export default function Landing() {
         <Home />
         <About />
         <Skills />
+        <Marquee />
         <Projects />
         <Services />
         <Contact />
