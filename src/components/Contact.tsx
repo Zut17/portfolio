@@ -6,7 +6,8 @@ import { useContent } from "../content/ContentContext";
 import { supabase, supabaseConfigured } from "../lib/supabase";
 
 const field =
-  "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
+  "w-full rounded-xl border border-border bg-background px-4 py-3.5 text-base outline-none transition placeholder:text-muted/60 focus:border-accent focus:ring-4 focus:ring-accent/20";
+const label = "mb-1.5 block text-sm font-semibold";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -77,7 +78,7 @@ export default function Contact() {
   ].filter(Boolean) as { icon: typeof Mail; label: string; href: string }[];
 
   return (
-    <Section id="contact" title={t("contact.title")}>
+    <Section id="contact" index="05" title={t("contact.title")}>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="bento p-8">
           <p className="text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
@@ -91,7 +92,7 @@ export default function Contact() {
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 rounded-xl border border-border p-2.5 pr-4 text-sm font-medium transition hover:bg-foreground/[0.05]"
+                  className="flex min-h-12 items-center gap-3 rounded-xl border border-border p-2.5 pr-4 text-base font-medium transition hover:bg-foreground/[0.05]"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-background text-foreground">
                     <Icon size={16} />
@@ -109,33 +110,60 @@ export default function Contact() {
           </ul>
         </div>
 
-        <form onSubmit={onSubmit} className="bento space-y-4 p-8">
-          <input
-            required
-            maxLength={200}
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder={t("contact.name")}
-            className={field}
-          />
-          <input
-            required
-            type="email"
-            maxLength={320}
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder={t("contact.email")}
-            className={field}
-          />
-          <textarea
-            required
-            rows={5}
-            maxLength={5000}
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-            placeholder={t("contact.message")}
-            className={field}
-          />
+        <form onSubmit={onSubmit} className="bento space-y-5 p-8">
+          <div>
+            <label htmlFor="c-name" className={label}>
+              {t("contact.name")}
+            </label>
+            <input
+              id="c-name"
+              name="name"
+              autoComplete="name"
+              required
+              maxLength={200}
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className={field}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="c-email" className={label}>
+              {t("contact.email")}
+            </label>
+            <input
+              id="c-email"
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              required
+              maxLength={320}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className={field}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="c-message" className={label}>
+              {t("contact.message")}
+            </label>
+            <textarea
+              id="c-message"
+              name="message"
+              required
+              rows={5}
+              maxLength={5000}
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              className={`${field} resize-y`}
+            />
+            <p className="mt-1 text-right text-xs text-muted">
+              {message.length} / 5000
+            </p>
+          </div>
+
           <input
             tabIndex={-1}
             autoComplete="off"
@@ -144,24 +172,28 @@ export default function Contact() {
             onChange={(event) => setTrap(event.target.value)}
             className="absolute left-[-9999px] h-0 w-0 opacity-0"
           />
+
           <button
             type="submit"
             disabled={status === "sending"}
-            className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-60"
+            className="btn-primary flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold disabled:opacity-60 sm:w-auto"
           >
-            <Send size={16} />{" "}
+            <Send size={18} />
             {status === "sending" ? t("contact.sending") : t("contact.send")}
           </button>
-          {status === "sent" && (
-            <p className="text-sm text-emerald-600 dark:text-emerald-400">
-              {t("contact.sent")}
-            </p>
-          )}
-          {status === "error" && (
-            <p className="text-sm text-red-600 dark:text-red-400">
-              {t("contact.error")}
-            </p>
-          )}
+
+          <div role="status" aria-live="polite" className="min-h-6">
+            {status === "sent" && (
+              <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                ✓ {t("contact.sent")}
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-sm font-medium text-red-600 dark:text-red-400">
+                {t("contact.error")}
+              </p>
+            )}
+          </div>
         </form>
       </div>
     </Section>

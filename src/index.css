@@ -5,7 +5,7 @@
 :root {
   --background: #e6ecf3;
   --foreground: #1b2a3f;
-  --muted: #5d6d84;
+  --muted: #4a5a72;
   --card: #f2f5f9;
   --card-2: #e1e8f1;
   --border: rgb(30 90 170 / 0.16);
@@ -23,7 +23,7 @@
 .dark {
   --background: #0a0f17;
   --foreground: #e7eef8;
-  --muted: #8d9bb2;
+  --muted: #a9b6cb;
   --card: #121a26;
   --card-2: #182233;
   --border: rgb(30 144 255 / 0.16);
@@ -56,6 +56,23 @@
 }
 
 @layer components {
+  .skip-link {
+    position: fixed;
+    top: -4rem;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
   .bento {
     position: relative;
     background:
@@ -226,6 +243,20 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 106.25%;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 body {
@@ -237,6 +268,7 @@ body {
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans);
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 

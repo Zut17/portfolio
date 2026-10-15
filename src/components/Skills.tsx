@@ -17,7 +17,7 @@ export default function Skills() {
   const { skills } = useContent();
 
   return (
-    <Section id="skills" title={t("skills.title")}>
+    <Section id="skills" index="02" title={t("skills.title")}>
       <div className="grid auto-rows-fr gap-5 md:grid-cols-2">
         {categories.map(({ key, icon: Icon }) => (
           <SpotlightCard key={key} className="p-6">

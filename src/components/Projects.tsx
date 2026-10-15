@@ -19,7 +19,7 @@ export default function Projects() {
   const { projects } = useContent();
 
   return (
-    <Section id="projects" title={t("projects.title")}>
+    <Section id="projects" index="03" title={t("projects.title")}>
       <div className="grid gap-5">
         {projects.map((project, index) => (
           <SpotlightCard key={project.slug} className="p-5 md:p-6">
