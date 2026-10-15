@@ -2,7 +2,7 @@ import { Globe, Monitor, Server, Wrench } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Section from "./Section";
 import SpotlightCard from "./SpotlightCard";
-import { skills } from "../data/skills";
+import { useContent } from "../content/ContentContext";
 import type { SkillCategory } from "../types";
 
 const categories: { key: SkillCategory; icon: typeof Server; span: string }[] = [
@@ -14,6 +14,7 @@ const categories: { key: SkillCategory; icon: typeof Server; span: string }[] = 
 
 export default function Skills() {
   const { t } = useTranslation();
+  const { skills } = useContent();
 
   return (
     <Section id="skills" index="02" title={t("skills.title")}>

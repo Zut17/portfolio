@@ -2,17 +2,18 @@ import { useTranslation } from "react-i18next";
 import Section from "./Section";
 import SpotlightCard from "./SpotlightCard";
 import { useLocalized } from "../hooks/useLocalized";
-import { bio, timeline } from "../data/profile";
+import { useContent } from "../content/ContentContext";
 
 export default function About() {
   const { t } = useTranslation();
   const l = useLocalized();
+  const { profile, timeline } = useContent();
 
   return (
     <Section id="about" index="01" title={t("about.title")} tone="blue">
       <div className="grid gap-10 md:grid-cols-12">
         <SpotlightCard className="p-8 md:col-span-7">
-          <p className="text-xl leading-relaxed md:text-2xl">{l(bio)}</p>
+          <p className="text-xl leading-relaxed md:text-2xl">{l(profile.bio)}</p>
         </SpotlightCard>
 
         <div className="md:col-span-5">

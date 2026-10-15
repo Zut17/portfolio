@@ -4,7 +4,7 @@ import Section from "./Section";
 import SpotlightCard from "./SpotlightCard";
 import ProjectCover from "./ProjectCover";
 import { useLocalized } from "../hooks/useLocalized";
-import { projects } from "../data/projects";
+import { useContent } from "../content/ContentContext";
 import type { ProjectStatus } from "../types";
 
 const statusStyle: Record<ProjectStatus, string> = {
@@ -16,6 +16,7 @@ const statusStyle: Record<ProjectStatus, string> = {
 export default function Projects() {
   const { t } = useTranslation();
   const l = useLocalized();
+  const { projects } = useContent();
 
   return (
     <Section id="projects" index="03" title={t("projects.title")} tone="mix">

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LocaleLayout from "./layouts/LocaleLayout";
 import Landing from "./pages/Landing";
+import { ContentProvider } from "./content/ContentContext";
 
 const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
 
@@ -21,7 +22,14 @@ export default function App() {
           </Suspense>
         }
       />
-      <Route path="/:lang" element={<LocaleLayout />}>
+      <Route
+        path="/:lang"
+        element={
+          <ContentProvider>
+            <LocaleLayout />
+          </ContentProvider>
+        }
+      >
         <Route index element={<Landing />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

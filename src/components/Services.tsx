@@ -3,13 +3,14 @@ import { Globe, LayoutDashboard, Monitor } from "lucide-react";
 import Section from "./Section";
 import SpotlightCard from "./SpotlightCard";
 import { useLocalized } from "../hooks/useLocalized";
-import { services } from "../data/services";
+import { useContent } from "../content/ContentContext";
 
 const icons = { web: Globe, odoo: LayoutDashboard, desktop: Monitor };
 
 export default function Services() {
   const { t } = useTranslation();
   const l = useLocalized();
+  const { services } = useContent();
 
   return (
     <Section id="services" index="04" title={t("services.title")} tone="orange">

@@ -58,3 +58,21 @@ export async function removeImage(url?: string | null): Promise<void> {
   const { error } = await supabase.storage.from(BUCKET).remove([path]);
   if (error) throw error;
 }
+
+export async function uploadPdf(file: File, folder: string): Promise<string> {
+  if (file.type !== "application/pdf") {
+    throw new Error("Le fichier doit être un PDF.");
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("Le PDF dépasse 5 Mo.");
+  }
+
+  const path = `${folder}/${crypto.randomUUID()}.pdf`;
+  const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+    contentType: "application/pdf",
+    cacheControl: "31536000",
+  });
+  if (error) throw error;
+
+  return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}

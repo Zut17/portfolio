@@ -3,6 +3,8 @@ import { motion, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import Counter from "../components/Counter";
 import { useTypewriter } from "../hooks/useTypewriter";
+import { useLocalized } from "../hooks/useLocalized";
+import { useContent } from "../content/ContentContext";
 
 const line: Variants = {
   hidden: { y: "110%" },
@@ -31,7 +33,15 @@ const chips = [
 
 export default function Home() {
   const { t } = useTranslation();
+  const { profile } = useContent();
+  const l = useLocalized();
   const [photoFailed, setPhotoFailed] = useState(false);
+  const nameParts = profile.fullName.trim().split(" ");
+  const lastName = nameParts.length > 1 ? (nameParts.pop() as string) : "";
+  const firstName = nameParts.join(" ");
+  const cvHref = profile.cvUrl
+    ? l(profile.cvUrl) || profile.cvUrl.fr || profile.cvUrl.en
+    : "";
   const typed = useTypewriter(t("home.typed", { returnObjects: true }) as string[]);
 
   const stats = [
@@ -77,7 +87,7 @@ export default function Home() {
                   animate="show"
                   className="block"
                 >
-                  Henry William
+                  {firstName}
                 </motion.span>
               </span>
               <span className="block overflow-hidden pb-2">
@@ -88,7 +98,7 @@ export default function Home() {
                   animate="show"
                   className="block"
                 >
-                  <span className="text-gradient">Zuteu</span>
+                  <span className="text-gradient">{lastName}</span>
                   <span className="text-accent">.</span>
                 </motion.span>
               </span>
@@ -107,7 +117,7 @@ export default function Home() {
               {...fade(0.6)}
               className="mt-4 max-w-xl text-lg leading-relaxed text-muted"
             >
-              {t("home.role")}
+              {l(profile.title)}
             </motion.p>
 
             <motion.div {...fade(0.75)} className="mt-10 flex flex-wrap gap-4">
@@ -123,6 +133,16 @@ export default function Home() {
               >
                 {t("home.ctaContact")}
               </a>
+              {cvHref && (
+                <a
+                  href={cvHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass rounded-full px-7 py-3.5 font-semibold transition hover:-translate-y-0.5 hover:border-accent hover:text-accent"
+                >
+                  {t("home.cv")}
+                </a>
+              )}
             </motion.div>
           </div>
 
@@ -136,12 +156,16 @@ export default function Home() {
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-primary/40 bg-card">
               {photoFailed ? (
                 <div className="flex h-full items-center justify-center font-display text-7xl font-bold text-primary">
-                  HWZ
+                  {profile.fullName
+                    .split(/\s+/)
+                    .map((part) => part[0])
+                    .join("")
+                    .slice(0, 3)}
                 </div>
               ) : (
                 <img
-                  src="/photo.jpg"
-                  alt="Henry William Zuteu"
+                  src={profile.photoUrl ?? "/photo.jpg"}
+                  alt={profile.fullName}
                   onError={() => setPhotoFailed(true)}
                   className="h-full w-full object-cover"
                 />

@@ -34,3 +34,16 @@ export interface Service {
   title: Localized;
   description: Localized;
 }
+
+export interface ProfileData {
+  fullName: string;
+  title: Localized;
+  bio: Localized;
+  email: string;
+  whatsapp: string;
+  linkedin: string;
+  github: string;
+  location: string;
+  photoUrl: string | null;
+  cvUrl: Localized;
+}
