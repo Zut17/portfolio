@@ -6,6 +6,7 @@ import AdminLayout from "./AdminLayout";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import ComingSoon from "./ComingSoon";
+import ProjectsAdmin from "./ProjectsAdmin";
 
 export default function AdminRoutes() {
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function AdminRoutes() {
           <Route element={<AdminLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profil" element={<ComingSoon title="Profil" />} />
-            <Route path="projets" element={<ComingSoon title="Projets" />} />
+            <Route path="projets" element={<ProjectsAdmin />} />
             <Route path="competences" element={<ComingSoon title="Compétences" />} />
             <Route path="parcours" element={<ComingSoon title="Parcours" />} />
             <Route path="services" element={<ComingSoon title="Services" />} />
