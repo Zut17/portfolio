@@ -6,7 +6,7 @@ import { useContent } from "../content/ContentContext";
 import { supabase, supabaseConfigured } from "../lib/supabase";
 
 const field =
-  "w-full rounded-xl border border-border bg-background/60 px-4 py-3 outline-none transition focus:border-primary focus:shadow-[0_0_20px_-6px_var(--color-primary)]";
+  "w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -77,23 +77,23 @@ export default function Contact() {
   ].filter(Boolean) as { icon: typeof Mail; label: string; href: string }[];
 
   return (
-    <Section id="contact" index="05" title={t("contact.title")} tone="mix">
-      <div className="grid gap-12 md:grid-cols-2">
-        <div>
-          <p className="font-display text-3xl font-bold leading-tight md:text-4xl">
-            <span className="text-gradient">{t("contact.heading")}</span>
+    <Section id="contact" title={t("contact.title")}>
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="bento p-8">
+          <p className="text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
+            {t("contact.heading")}
           </p>
-          <p className="mt-4 text-muted">{t("contact.intro")}</p>
-          <ul className="mt-8 space-y-3">
+          <p className="mt-3 text-muted">{t("contact.intro")}</p>
+          <ul className="mt-8 space-y-2">
             {links.map(({ icon: Icon, label, href }) => (
               <li key={label}>
                 <a
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="glass flex items-center gap-3 rounded-full py-2 pl-2 pr-5 transition hover:border-primary hover:text-primary"
+                  className="flex items-center gap-3 rounded-xl border border-border p-2.5 pr-4 text-sm font-medium transition hover:bg-foreground/[0.05]"
                 >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-primary">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-background text-foreground">
                     <Icon size={16} />
                   </span>
                   {label}
@@ -101,18 +101,15 @@ export default function Contact() {
               </li>
             ))}
             {contact.location && (
-              <li className="flex items-center gap-3 pl-2 text-muted">
-                <MapPin size={16} className="text-accent" />
+              <li className="flex items-center gap-3 pl-2.5 pt-2 text-sm text-muted">
+                <MapPin size={16} />
                 {contact.location}
               </li>
             )}
           </ul>
         </div>
 
-        <form
-          onSubmit={onSubmit}
-          className="glass space-y-4 rounded-2xl p-6 md:p-8"
-        >
+        <form onSubmit={onSubmit} className="bento space-y-4 p-8">
           <input
             required
             maxLength={200}
@@ -150,16 +147,20 @@ export default function Contact() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="flex items-center gap-2 rounded-full bg-accent px-7 py-3 font-semibold text-white shadow-[0_0_30px_-5px_var(--color-accent)] transition hover:-translate-y-0.5 disabled:opacity-60"
+            className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-60"
           >
             <Send size={16} />{" "}
             {status === "sending" ? t("contact.sending") : t("contact.send")}
           </button>
           {status === "sent" && (
-            <p className="text-sm text-primary">{t("contact.sent")}</p>
+            <p className="text-sm text-emerald-600 dark:text-emerald-400">
+              {t("contact.sent")}
+            </p>
           )}
           {status === "error" && (
-            <p className="text-sm text-accent">{t("contact.error")}</p>
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {t("contact.error")}
+            </p>
           )}
         </form>
       </div>

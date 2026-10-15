@@ -17,30 +17,30 @@ export default function Navbar({ lang }: { lang: Lang }) {
   const other: Lang = lang === "fr" ? "en" : "fr";
 
   return (
-    <header className="fixed inset-x-0 top-4 z-50 px-4">
-      <nav className="glass mx-auto flex h-14 max-w-5xl items-center justify-between rounded-full px-5">
-        <a href="#home" className="font-display text-lg font-bold">
-          HWZ<span className="text-accent">.</span>
+    <header className="fixed inset-x-0 top-3 z-50 px-4">
+      <nav className="mx-auto flex h-14 max-w-5xl items-center justify-between rounded-2xl border border-border bg-card/70 px-4 shadow-sm backdrop-blur-xl">
+        <a href="#home" className="text-base font-semibold tracking-tight">
+          HWZ
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
-          {items.map((k) => (
-            <li key={k}>
+          {items.map((key) => (
+            <li key={key}>
               <a
-                href={`#${k}`}
-                className={`relative isolate block rounded-full px-4 py-1.5 text-sm transition ${
-                  active === k
-                    ? "text-primary"
+                href={`#${key}`}
+                className={`relative isolate block rounded-lg px-3.5 py-1.5 text-sm transition ${
+                  active === key
+                    ? "text-foreground"
                     : "text-muted hover:text-foreground"
                 }`}
               >
-                {active === k && (
+                {active === key && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 -z-10 rounded-full bg-primary/15"
+                    className="absolute inset-0 -z-10 rounded-lg bg-foreground/[0.07]"
                   />
                 )}
-                {t(`nav.${k}`)}
+                {t(`nav.${key}`)}
               </a>
             </li>
           ))}
@@ -49,22 +49,24 @@ export default function Navbar({ lang }: { lang: Lang }) {
         <div className="flex items-center gap-2">
           <Link
             to={`/${other}`}
-            className="rounded-full border border-border px-3 py-1 font-mono text-xs font-semibold uppercase transition hover:border-primary hover:text-primary"
+            className="rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium uppercase transition hover:bg-foreground/[0.06]"
           >
             {other}
           </Link>
           <button
+            type="button"
             onClick={toggle}
             aria-label="Toggle theme"
-            className="rounded-full border border-border p-2 transition hover:border-accent hover:text-accent"
+            className="rounded-lg border border-border p-2 transition hover:bg-foreground/[0.06]"
           >
             {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           <button
-            onClick={() => setOpen((o) => !o)}
+            type="button"
+            onClick={() => setOpen((previous) => !previous)}
             aria-label="Menu"
             aria-expanded={open}
-            className="rounded-full border border-border p-2 md:hidden"
+            className="rounded-lg border border-border p-2 md:hidden"
           >
             {open ? <X size={16} /> : <Menu size={16} />}
           </button>
@@ -75,16 +77,16 @@ export default function Navbar({ lang }: { lang: Lang }) {
         <motion.ul
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass mx-auto mt-2 flex max-w-5xl flex-col gap-4 rounded-3xl p-6 md:hidden"
+          className="mx-auto mt-2 flex max-w-5xl flex-col gap-1 rounded-2xl border border-border bg-card p-3 md:hidden"
         >
-          {items.map((k) => (
-            <li key={k}>
+          {items.map((key) => (
+            <li key={key}>
               <a
-                href={`#${k}`}
+                href={`#${key}`}
                 onClick={() => setOpen(false)}
-                className="font-display text-xl hover:text-primary"
+                className="block rounded-lg px-3 py-2.5 text-base font-medium hover:bg-foreground/[0.06]"
               >
-                {t(`nav.${k}`)}
+                {t(`nav.${key}`)}
               </a>
             </li>
           ))}
