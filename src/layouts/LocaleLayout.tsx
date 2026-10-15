@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
+import ScrollProgress from "../components/ScrollProgress";
 import { LANGS, type Lang } from "../i18n";
 
 export default function LocaleLayout() {
@@ -24,6 +25,7 @@ export default function LocaleLayout() {
 
   return (
     <>
+      <ScrollProgress />
       <Navbar lang={lang as Lang} />
       <Outlet />
     </>

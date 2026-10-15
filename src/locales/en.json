@@ -12,13 +12,30 @@
     "contact": "Contact"
   },
   "home": {
+    "available": "Open to opportunities",
     "greeting": "Hi, I'm",
     "role": "Junior Full Stack Web & Mobile Developer and Analyst",
-    "cta": "See my projects"
+    "typed": [
+      "Web applications",
+      "Odoo modules and dashboards",
+      ".NET desktop applications"
+    ],
+    "cta": "See my projects",
+    "ctaContact": "Contact me",
+    "cv": "Download my CV",
+    "stats": {
+      "projects": "featured projects",
+      "indicators": "indicators in the Camlait dashboard",
+      "internship": "company internship"
+    }
   },
   "about": {
     "title": "About",
-    "timeline": "Education and experience"
+    "timeline": "Education and experience",
+    "kind": {
+      "education": "Education",
+      "work": "Experience"
+    }
   },
   "skills": {
     "title": "Skills",
@@ -43,14 +60,19 @@
   },
   "contact": {
     "title": "Contact",
+    "heading": "Let's work together",
     "intro": "A project, an opportunity or a question? Write to me, I reply quickly.",
     "name": "Your name",
     "email": "Your email",
     "message": "Your message",
     "send": "Send",
+    "sending": "Sending…",
+    "sent": "Thank you! Your message has been sent.",
+    "error": "The message could not be sent. Please try again or email me directly.",
     "subjectPrefix": "Contact from the portfolio:"
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "top": "Back to top"
   }
 }

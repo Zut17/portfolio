@@ -11,6 +11,7 @@ export const projects: Project[] = [
     role: { fr: "Développeur unique", en: "Sole developer" },
     status: "deploying",
     techStack: ["Python / ORM", "OWL", "XML", "Chart.js", "PostgreSQL", "Git / Jira"],
+    cover: "/projects/camlait-dashboard.jpg",
   },
   {
     slug: "algocraft",
@@ -22,6 +23,7 @@ export const projects: Project[] = [
     role: { fr: "Équipe de 5 développeurs", en: "Team of 5 developers" },
     status: "in_progress",
     techStack: ["C# / .NET", "Windows Forms"],
+    cover: "/projects/algocraft.jpg",
   },
   {
     slug: "churchtools",
@@ -33,5 +35,6 @@ export const projects: Project[] = [
     role: { fr: "Développement en autonomie", en: "Independent development" },
     status: "personal",
     techStack: [],
+    cover: "/projects/churchtools.jpg",
   },
 ];

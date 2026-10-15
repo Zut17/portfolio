@@ -11,6 +11,7 @@ export interface Project {
   techStack: string[];
   demoUrl?: string;
   repoUrl?: string;
+  cover?: string;
 }
 
 export type SkillCategory = "backend" | "frontend" | "desktop" | "tools";
@@ -32,4 +33,17 @@ export interface Service {
   icon: "web" | "odoo" | "desktop";
   title: Localized;
   description: Localized;
+}
+
+export interface ProfileData {
+  fullName: string;
+  title: Localized;
+  bio: Localized;
+  email: string;
+  whatsapp: string;
+  linkedin: string;
+  github: string;
+  location: string;
+  photoUrl: string | null;
+  cvUrl: Localized;
 }

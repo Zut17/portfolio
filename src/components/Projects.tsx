@@ -1,55 +1,74 @@
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { Code, ExternalLink } from "lucide-react";
 import Section from "./Section";
+import SpotlightCard from "./SpotlightCard";
+import ProjectCover from "./ProjectCover";
 import { useLocalized } from "../hooks/useLocalized";
-import { projects } from "../data/projects";
+import { useContent } from "../content/ContentContext";
 import type { ProjectStatus } from "../types";
 
 const statusStyle: Record<ProjectStatus, string> = {
-  in_progress: "border-accent text-accent",
-  deploying: "border-primary text-primary",
+  in_progress: "border-accent/60 bg-accent/10 text-accent",
+  deploying: "border-primary/60 bg-primary/10 text-primary",
   personal: "border-border text-muted",
 };
 
 export default function Projects() {
   const { t } = useTranslation();
   const l = useLocalized();
+  const { projects } = useContent();
 
   return (
-    <Section id="projects" title={t("projects.title")}>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((p) => (
-          <motion.article
+    <Section id="projects" index="03" title={t("projects.title")} tone="mix">
+      <div className="grid gap-6 md:grid-cols-2">
+        {projects.map((p, i) => (
+          <SpotlightCard
             key={p.slug}
-            whileHover={{ y: -6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="flex flex-col rounded-2xl border border-border bg-card p-6"
+            className={`flex flex-col p-8 ${i === 0 ? "md:col-span-2" : ""}`}
           >
-            <span
-              className={`mb-4 w-fit rounded-full border px-3 py-1 text-xs font-semibold ${statusStyle[p.status]}`}
+            <ProjectCover
+              src={p.cover}
+              title={p.title}
+              className={`mb-6 ${i === 0 ? "aspect-[16/7]" : "aspect-video"}`}
+            />
+            <div className="mb-6 flex items-center justify-between">
+              <span className="font-mono text-sm text-primary">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span
+                className={`rounded-full border px-3 py-1 font-mono text-xs ${statusStyle[p.status]}`}
+              >
+                {t(`projects.status.${p.status}`)}
+              </span>
+            </div>
+
+            <h3
+              className={`font-display font-bold tracking-tight transition-colors group-hover:text-primary ${
+                i === 0 ? "text-4xl md:text-5xl" : "text-3xl"
+              }`}
             >
-              {t(`projects.status.${p.status}`)}
-            </span>
-            <h3 className="text-xl font-bold">{p.title}</h3>
-            <p className="mt-1 text-sm text-accent">{l(p.role)}</p>
-            <p className="mt-3 flex-1 text-muted">{l(p.summary)}</p>
+              {p.title}
+            </h3>
+            <p className="mt-2 font-mono text-sm text-accent">{l(p.role)}</p>
+            <p className="mt-4 flex-1 text-lg leading-relaxed text-muted">
+              {l(p.summary)}
+            </p>
 
             {p.techStack.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
+              <ul className="mt-6 flex flex-wrap gap-2">
                 {p.techStack.map((tech) => (
-                  <span
+                  <li
                     key={tech}
-                    className="rounded-md bg-background px-2 py-1 text-xs text-muted"
+                    className="rounded-full border border-border px-3 py-1 font-mono text-xs text-muted"
                   >
                     {tech}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
 
             {(p.demoUrl || p.repoUrl) && (
-              <div className="mt-4 flex gap-4">
+              <div className="mt-6 flex gap-5">
                 {p.repoUrl && (
                   <a
                     href={p.repoUrl}
@@ -72,7 +91,7 @@ export default function Projects() {
                 )}
               </div>
             )}
-          </motion.article>
+          </SpotlightCard>
         ))}
       </div>
     </Section>
