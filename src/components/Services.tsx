@@ -13,7 +13,7 @@ export default function Services() {
   const { services } = useContent();
 
   return (
-    <Section id="services" title={t("services.title")}>
+    <Section id="services" index="04" title={t("services.title")}>
       <p className="mb-8 max-w-2xl text-lg text-muted">
         {t("services.intro")}
       </p>
