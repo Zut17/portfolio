@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import type { SkillRow } from "../lib/db";
 import type { SkillCategory } from "../types";
 import { useRows } from "./useRows";
-import { btnPrimary, inputClass } from "./ui";
+import { btnPrimary, ConfirmDialog, inputClass } from "./ui";
 
 const categories: { key: SkillCategory; label: string }[] = [
   { key: "backend", label: "Backend et données" },
@@ -19,6 +19,8 @@ export default function SkillsAdmin() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<SkillCategory>("backend");
   const [adding, setAdding] = useState(false);
+  const [skillToDelete, setSkillToDelete] = useState<SkillRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const add = async (event: FormEvent) => {
     event.preventDefault();
@@ -60,6 +62,17 @@ export default function SkillsAdmin() {
           ? renameError.message
           : "Impossible de modifier cette compétence.",
       );
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!skillToDelete) return;
+    setDeleting(true);
+    try {
+      await remove(skillToDelete.id);
+    } finally {
+      setDeleting(false);
+      setSkillToDelete(null);
     }
   };
 
@@ -155,7 +168,7 @@ export default function SkillsAdmin() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => void remove(skill.id)}
+                        onClick={() => setSkillToDelete(skill)}
                         aria-label={`Supprimer ${skill.name}`}
                         className="rounded-lg p-2 text-muted transition hover:text-accent"
                       >
@@ -169,6 +182,19 @@ export default function SkillsAdmin() {
           })}
         </div>
       )}
+      <ConfirmDialog
+        open={!!skillToDelete}
+        title="Supprimer cette compétence ?"
+        message={
+          <>
+            <strong className="text-foreground">{skillToDelete?.name}</strong>{" "}
+            sera définitivement supprimée. Cette action est irréversible.
+          </>
+        }
+        busy={deleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setSkillToDelete(null)}
+      />
     </div>
   );
 }

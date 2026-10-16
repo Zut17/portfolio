@@ -12,7 +12,13 @@ import { supabase } from "../lib/supabase";
 import { removeImage } from "../lib/storage";
 import type { ProjectRow, ProjectStatus } from "../lib/db";
 import ImageUpload from "./ImageUpload";
-import { btnGhost, btnPrimary, Field, inputClass } from "./ui";
+import {
+  btnGhost,
+  btnPrimary,
+  ConfirmDialog,
+  Field,
+  inputClass,
+} from "./ui";
 
 const statusLabels: Record<ProjectStatus, string> = {
   in_progress: "En cours",
@@ -50,6 +56,9 @@ export default function ProjectsAdmin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editing, setEditing] = useState<ProjectRow | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<ProjectRow | null>(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   const load = useCallback(async () => {
     const { data, error } = await supabase
@@ -98,34 +107,40 @@ export default function ProjectsAdmin() {
     await load();
   };
 
-  const remove = async (project: ProjectRow) => {
-    if (
-      !window.confirm(
-        `Supprimer « ${project.title} » ? Cette action est définitive.`,
-      )
-    ) {
-      return;
-    }
-
-    const { error } = await supabase
-      .from("projects")
-      .delete()
-      .eq("id", project.id);
-    if (error) {
-      setError(error.message);
-      return;
-    }
-
+  const handleConfirmDelete = async () => {
+    if (!projectToDelete) return;
+    setDeleting(true);
+    setDeleteError("");
     try {
-      await removeImage(project.cover_url);
-    } catch (e) {
-      setError(
-        e instanceof Error
-          ? `Projet supprimé, mais l'image n'a pas pu être supprimée : ${e.message}`
-          : "Projet supprimé, mais l'image n'a pas pu être supprimée.",
+      const { error: deleteError } = await supabase
+        .from("projects")
+        .delete()
+        .eq("id", projectToDelete.id);
+      if (deleteError) {
+        setDeleteError(deleteError.message);
+        return;
+      }
+
+      setProjectToDelete(null);
+      try {
+        await removeImage(projectToDelete.cover_url);
+      } catch (imageError) {
+        setError(
+          imageError instanceof Error
+            ? `Projet supprimé, mais l'image n'a pas pu être supprimée : ${imageError.message}`
+            : "Projet supprimé, mais l'image n'a pas pu être supprimée.",
+        );
+      }
+      await load();
+    } catch (deleteError) {
+      setDeleteError(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Impossible de supprimer ce projet.",
       );
+    } finally {
+      setDeleting(false);
     }
-    await load();
   };
 
   if (editing) {
@@ -238,7 +253,10 @@ export default function ProjectsAdmin() {
                   <Pencil size={16} />
                 </button>
                 <button
-                  onClick={() => remove(project)}
+                  onClick={() => {
+                    setDeleteError("");
+                    setProjectToDelete(project);
+                  }}
                   aria-label="Supprimer"
                   className="rounded-lg p-2 text-muted transition hover:text-accent"
                 >
@@ -249,6 +267,27 @@ export default function ProjectsAdmin() {
           ))}
         </ul>
       )}
+      <ConfirmDialog
+        open={!!projectToDelete}
+        title="Supprimer ce projet ?"
+        message={
+          <>
+            <strong className="text-foreground">
+              {projectToDelete?.title}
+            </strong>{" "}
+            et son image seront définitivement supprimés. Cette action est
+            irréversible.
+            {deleteError && (
+              <p className="mt-3 text-accent">
+                La suppression a échoué : {deleteError}
+              </p>
+            )}
+          </>
+        }
+        busy={deleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setProjectToDelete(null)}
+      />
     </div>
   );
 }
@@ -365,6 +404,7 @@ function ProjectForm({
           value={form.cover_url}
           onChange={(url) => set("cover_url", url)}
           folder="projects"
+          cropAspect={16 / 9}
         />
       </Field>
 

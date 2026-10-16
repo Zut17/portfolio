@@ -216,6 +216,7 @@ export default function ProfileAdmin() {
             onChange={(url) => set("photo_url", url)}
             folder="profile"
             aspect="aspect-[4/5]"
+            cropAspect={4 / 5}
           />
         </div>
       </Field>

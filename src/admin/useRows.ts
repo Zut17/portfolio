@@ -58,6 +58,49 @@ export function useRows<T extends { id: string; sort_order: number }>(
     }
   };
 
+  const reorder = async (fromIndex: number, toIndex: number) => {
+    if (
+      fromIndex === toIndex ||
+      fromIndex < 0 ||
+      toIndex < 0 ||
+      fromIndex >= rows.length ||
+      toIndex >= rows.length
+    ) {
+      return;
+    }
+
+    const previous = rows;
+    const next = [...rows];
+    const [moved] = next.splice(fromIndex, 1);
+    if (!moved) return;
+    next.splice(toIndex, 0, moved);
+
+    setError("");
+    setRows(next.map((row, index) => ({ ...row, sort_order: index })));
+
+    try {
+      const updates = next.map((row, index) =>
+        supabase
+          .from(table)
+          .update({ sort_order: index })
+          .eq("id", row.id),
+      );
+      const results = await Promise.all(updates);
+      const firstError = results.find((result) => result.error)?.error;
+      if (firstError) {
+        setError(firstError.message);
+        setRows(previous);
+      }
+    } catch (reorderError) {
+      setError(
+        reorderError instanceof Error
+          ? reorderError.message
+          : "Impossible de réordonner.",
+      );
+      setRows(previous);
+    }
+  };
+
   const remove = async (id: string) => {
     setError("");
     try {
@@ -79,5 +122,15 @@ export function useRows<T extends { id: string; sort_order: number }>(
     }
   };
 
-  return { rows, loading, error, setError, load, nextOrder, swap, remove };
+  return {
+    rows,
+    loading,
+    error,
+    setError,
+    load,
+    nextOrder,
+    swap,
+    reorder,
+    remove,
+  };
 }

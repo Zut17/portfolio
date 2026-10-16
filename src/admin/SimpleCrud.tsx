@@ -1,8 +1,15 @@
 import { useState, type FormEvent } from "react";
-import { ArrowDown, ArrowUp, Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useRows } from "./useRows";
-import { btnGhost, btnPrimary, Field, inputClass } from "./ui";
+import { SortableItem, SortableList } from "./SortableList";
+import {
+  btnGhost,
+  btnPrimary,
+  ConfirmDialog,
+  Field,
+  inputClass,
+} from "./ui";
 
 export interface FieldDef {
   key: string;
@@ -32,11 +39,13 @@ export default function SimpleCrud({
   primary: (row: Row) => string;
   secondary: (row: Row) => string;
 }) {
-  const { rows, loading, error, load, nextOrder, swap, remove } =
+  const { rows, loading, error, load, nextOrder, reorder, remove } =
     useRows<Row>(table);
   const [editing, setEditing] = useState<Row | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const [rowToDelete, setRowToDelete] = useState<Row | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const set = (key: string, value: string) =>
     setEditing((previous) => (previous ? { ...previous, [key]: value } : previous));
@@ -75,9 +84,15 @@ export default function SimpleCrud({
     }
   };
 
-  const confirmRemove = async (row: Row) => {
-    if (!window.confirm(`Supprimer « ${primary(row)} » ?`)) return;
-    await remove(row.id);
+  const handleConfirmDelete = async () => {
+    if (!rowToDelete) return;
+    setDeleting(true);
+    try {
+      await remove(rowToDelete.id);
+    } finally {
+      setDeleting(false);
+      setRowToDelete(null);
+    }
   };
 
   if (editing) {
@@ -169,64 +184,64 @@ export default function SimpleCrud({
       ) : rows.length === 0 ? (
         <p className="mt-8 text-muted">Rien pour l'instant.</p>
       ) : (
-        <ul className="mt-8 space-y-3">
-          {rows.map((row, index) => (
-            <li
-              key={row.id}
-              className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-card p-4"
-            >
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-display text-lg font-semibold">
-                  {primary(row)}
-                </p>
-                <p className="truncate text-sm text-muted">{secondary(row)}</p>
-              </div>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const previous = rows[index - 1];
-                    if (previous) void swap(row, previous);
-                  }}
-                  disabled={index === 0}
-                  aria-label="Monter"
-                  className="rounded-lg p-2 text-muted transition hover:text-primary disabled:opacity-30"
-                >
-                  <ArrowUp size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const next = rows[index + 1];
-                    if (next) void swap(row, next);
-                  }}
-                  disabled={index === rows.length - 1}
-                  aria-label="Descendre"
-                  className="rounded-lg p-2 text-muted transition hover:text-primary disabled:opacity-30"
-                >
-                  <ArrowDown size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEditing(row)}
-                  aria-label="Modifier"
-                  className="rounded-lg p-2 text-muted transition hover:text-primary"
-                >
-                  <Pencil size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void confirmRemove(row)}
-                  aria-label="Supprimer"
-                  className="rounded-lg p-2 text-muted transition hover:text-accent"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <SortableList
+          ids={rows.map((row) => row.id)}
+          onReorder={(from, to) => void reorder(from, to)}
+        >
+          <ul className="mt-8 space-y-3">
+            {rows.map((row) => (
+              <SortableItem key={row.id} id={row.id}>
+                {(handle) => (
+                  <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-card p-4">
+                    {handle}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-display text-lg font-semibold">
+                        {primary(row)}
+                      </p>
+                      <p className="truncate text-sm text-muted">
+                        {secondary(row)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setEditing(row)}
+                        aria-label="Modifier"
+                        className="rounded-lg p-2 text-muted transition hover:text-primary"
+                      >
+                        <Pencil size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRowToDelete(row)}
+                        aria-label="Supprimer"
+                        className="rounded-lg p-2 text-muted transition hover:text-accent"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </SortableItem>
+            ))}
+          </ul>
+        </SortableList>
       )}
+      <ConfirmDialog
+        open={!!rowToDelete}
+        title="Supprimer cet élément ?"
+        message={
+          <>
+            <strong className="text-foreground">
+              {rowToDelete && primary(rowToDelete)}
+            </strong>{" "}
+            sera définitivement supprimé. Cette action est irréversible.
+          </>
+        }
+        busy={deleting}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setRowToDelete(null)}
+      />
     </div>
   );
 }
