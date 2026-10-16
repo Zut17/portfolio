@@ -14,15 +14,16 @@ import {
 } from "lucide-react";
 import { useAuth } from "./AuthContext";
 import { useTheme } from "../hooks/useTheme";
+import { ADMIN } from "../lib/adminPath";
 
 const links = [
-  { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard, end: true },
-  { to: "/admin/profil", label: "Profil", icon: User, end: false },
-  { to: "/admin/projets", label: "Projets", icon: FolderOpen, end: false },
-  { to: "/admin/competences", label: "Compétences", icon: Wrench, end: false },
-  { to: "/admin/parcours", label: "Parcours", icon: GraduationCap, end: false },
-  { to: "/admin/services", label: "Services", icon: Layers, end: false },
-  { to: "/admin/messages", label: "Messages", icon: Mail, end: false },
+  { to: ADMIN, label: "Tableau de bord", icon: LayoutDashboard, end: true },
+  { to: `${ADMIN}/profil`, label: "Profil", icon: User, end: false },
+  { to: `${ADMIN}/projets`, label: "Projets", icon: FolderOpen, end: false },
+  { to: `${ADMIN}/competences`, label: "Compétences", icon: Wrench, end: false },
+  { to: `${ADMIN}/parcours`, label: "Parcours", icon: GraduationCap, end: false },
+  { to: `${ADMIN}/services`, label: "Services", icon: Layers, end: false },
+  { to: `${ADMIN}/messages`, label: "Messages", icon: Mail, end: false },
 ];
 
 export default function AdminLayout() {

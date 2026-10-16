@@ -2,6 +2,8 @@ import { useState, type FormEvent } from "react";
 import { Navigate } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { supabase } from "../lib/supabase";
+import { supabaseConfigured } from "../lib/supabaseConfig";
+import { ADMIN } from "../lib/adminPath";
 import { useAuth } from "./AuthContext";
 
 const field =
@@ -14,7 +16,19 @@ export default function Login() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  if (!loading && session && isAdmin) return <Navigate to="/admin" replace />;
+  if (!loading && session && isAdmin) return <Navigate to={ADMIN} replace />;
+
+  if (!supabaseConfigured) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-6 text-center">
+        <p className="max-w-md text-sm text-muted">
+          Configuration manquante : les variables VITE_SUPABASE_URL et
+          VITE_SUPABASE_PUBLISHABLE_KEY ne sont pas définies sur cet
+          environnement. Ajoute-les dans Vercel puis redéploie.
+        </p>
+      </div>
+    );
+  }
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import LocaleLayout from "./layouts/LocaleLayout";
 import Landing from "./pages/Landing";
 import { ContentProvider } from "./content/ContentContext";
+import { ADMIN } from "./lib/adminPath";
 
 const AdminRoutes = lazy(() => import("./admin/AdminRoutes"));
 
@@ -15,7 +16,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to={`/${detectLang()}`} replace />} />
       <Route
-        path="/admin/*"
+        path={`${ADMIN}/*`}
         element={
           <Suspense fallback={null}>
             <AdminRoutes />

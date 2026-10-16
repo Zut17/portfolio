@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import { ADMIN } from "../lib/adminPath";
 
 const tables = [
-  { key: "projects", label: "Projets", to: "/admin/projets" },
-  { key: "skills", label: "Compétences", to: "/admin/competences" },
-  { key: "timeline", label: "Parcours", to: "/admin/parcours" },
-  { key: "services", label: "Services", to: "/admin/services" },
+  { key: "projects", label: "Projets", to: `${ADMIN}/projets` },
+  { key: "skills", label: "Compétences", to: `${ADMIN}/competences` },
+  { key: "timeline", label: "Parcours", to: `${ADMIN}/parcours` },
+  { key: "services", label: "Services", to: `${ADMIN}/services` },
 ] as const;
 
 export default function Dashboard() {
@@ -37,7 +38,7 @@ export default function Dashboard() {
 
   const cards = [
     ...tables.map((t) => ({ label: t.label, to: t.to, value: counts?.[t.key] })),
-    { label: "Messages non lus", to: "/admin/messages", value: counts?.messages },
+    { label: "Messages non lus", to: `${ADMIN}/messages`, value: counts?.messages },
   ];
 
   return (

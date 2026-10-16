@@ -11,6 +11,7 @@ import SkillsAdmin from "./SkillsAdmin";
 import TimelineAdmin from "./TimelineAdmin";
 import ServicesAdmin from "./ServicesAdmin";
 import MessagesAdmin from "./MessagesAdmin";
+import { ADMIN } from "../lib/adminPath";
 
 export default function AdminRoutes() {
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function AdminRoutes() {
             <Route path="messages" element={<MessagesAdmin />} />
           </Route>
         </Route>
-        <Route path="*" element={<Navigate to="/admin" replace />} />
+        <Route path="*" element={<Navigate to={ADMIN} replace />} />
       </Routes>
     </AuthProvider>
   );
