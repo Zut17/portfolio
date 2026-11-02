@@ -37,18 +37,21 @@ function ErrorText({ message }: { message: string }) {
   );
 }
 
-/** Traduit une erreur Supabase Auth en message exploitable. */
+/** Traduit une erreur Supabase Auth en message exploitable (avec le détail technique). */
 function describeAuthError(error: { message?: string; code?: string; status?: number; name?: string }) {
   const code = error.code ?? "";
-  if (code === "invalid_credentials") return "Email ou mot de passe incorrect.";
-  if (code === "email_not_confirmed") return "Adresse email non confirmée : confirme-la depuis Supabase → Authentication → Users.";
-  if (code === "over_request_rate_limit" || error.status === 429) return "Trop de tentatives. Patiente quelques minutes puis réessaie.";
-  if (code === "user_banned") return "Ce compte est bloqué dans Supabase.";
-  if (code === "mfa_factor_not_found" || code === "mfa_totp_enroll_not_enabled" || code === "mfa_totp_verify_not_enabled")
-    return "La double authentification TOTP n'est pas activée dans Supabase (Authentication → Multi-Factor).";
-  if (!error.status || error.name === "AuthRetryableFetchError" || /fetch|network/i.test(error.message ?? ""))
-    return `Impossible de joindre Supabase (${hostOf(supabaseUrl)}). Vérifie VITE_SUPABASE_URL et VITE_SUPABASE_PUBLISHABLE_KEY sur Vercel, puis redéploie.`;
-  return `Erreur Supabase : ${error.message ?? "inconnue"}${code ? ` (${code})` : ""}`;
+  const details = `[${[error.name, error.status, code].filter(Boolean).join(" · ")}] ${error.message ?? ""}`.trim();
+  let hint: string;
+  if (code === "invalid_credentials") hint = "Email ou mot de passe incorrect.";
+  else if (code === "email_not_confirmed") hint = "Adresse email non confirmée : confirme-la depuis Supabase → Authentication → Users.";
+  else if (code === "over_request_rate_limit" || error.status === 429) hint = "Trop de tentatives. Patiente quelques minutes puis réessaie.";
+  else if (code === "user_banned") hint = "Ce compte est bloqué dans Supabase.";
+  else if (code.startsWith("mfa_") && code.endsWith("_not_enabled"))
+    hint = "La double authentification TOTP est désactivée dans Supabase (Authentication → Multi-Factor).";
+  else if (error.name === "AuthRetryableFetchError" || /failed to fetch|networkerror|load failed/i.test(error.message ?? ""))
+    hint = `Requête vers Supabase (${hostOf(supabaseUrl)}) bloquée ou impossible : bloqueur de publicités, réseau ou variables Vercel.`;
+  else hint = "Erreur Supabase.";
+  return `${hint} Détail : ${details}`;
 }
 
 function hostOf(url?: string) {
