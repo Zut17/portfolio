@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { KeyRound, LogIn, ShieldCheck } from "lucide-react";
 import { supabase } from "../lib/supabase";
-import { supabaseConfigured } from "../lib/supabaseConfig";
+import { supabaseConfigured, supabaseUrl } from "../lib/supabaseConfig";
 import { ADMIN_HOME } from "../lib/adminPath";
 import { useAuth } from "./AuthContext";
 
@@ -37,6 +37,28 @@ function ErrorText({ message }: { message: string }) {
   );
 }
 
+/** Traduit une erreur Supabase Auth en message exploitable. */
+function describeAuthError(error: { message?: string; code?: string; status?: number; name?: string }) {
+  const code = error.code ?? "";
+  if (code === "invalid_credentials") return "Email ou mot de passe incorrect.";
+  if (code === "email_not_confirmed") return "Adresse email non confirmée : confirme-la depuis Supabase → Authentication → Users.";
+  if (code === "over_request_rate_limit" || error.status === 429) return "Trop de tentatives. Patiente quelques minutes puis réessaie.";
+  if (code === "user_banned") return "Ce compte est bloqué dans Supabase.";
+  if (code === "mfa_factor_not_found" || code === "mfa_totp_enroll_not_enabled" || code === "mfa_totp_verify_not_enabled")
+    return "La double authentification TOTP n'est pas activée dans Supabase (Authentication → Multi-Factor).";
+  if (!error.status || error.name === "AuthRetryableFetchError" || /fetch|network/i.test(error.message ?? ""))
+    return `Impossible de joindre Supabase (${hostOf(supabaseUrl)}). Vérifie VITE_SUPABASE_URL et VITE_SUPABASE_PUBLISHABLE_KEY sur Vercel, puis redéploie.`;
+  return `Erreur Supabase : ${error.message ?? "inconnue"}${code ? ` (${code})` : ""}`;
+}
+
+function hostOf(url?: string) {
+  try {
+    return url ? new URL(url).host : "URL absente";
+  } catch {
+    return "URL invalide";
+  }
+}
+
 /** Champ code TOTP à 6 chiffres. */
 function CodeField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
@@ -60,6 +82,7 @@ function CodeField({ value, onChange }: { value: string; onChange: (v: string) =
 }
 
 function CredentialsStep() {
+  const { authError } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -70,7 +93,7 @@ function CredentialsStep() {
     setSubmitting(true);
     setError("");
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInError) setError("Identifiants incorrects.");
+    if (signInError) setError(describeAuthError(signInError));
     setSubmitting(false);
   };
 
@@ -85,11 +108,12 @@ function CredentialsStep() {
           <label htmlFor="login-password" className="mb-1.5 block text-sm font-semibold">Mot de passe</label>
           <input id="login-password" required type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className={field} />
         </div>
-        <ErrorText message={error} />
+        <ErrorText message={error || authError} />
         <button type="submit" disabled={submitting} className={primaryButton}>
           <LogIn size={16} aria-hidden="true" /> {submitting ? "Connexion…" : "Se connecter"}
         </button>
       </form>
+      <p className="mt-6 text-center text-xs text-muted">Projet : {hostOf(supabaseUrl)}</p>
     </Card>
   );
 }
@@ -119,7 +143,7 @@ function EnrollStep() {
       });
       if (cancelled) return;
       if (enrollError || !data) {
-        setError("Impossible de démarrer la configuration. Vérifie que le MFA TOTP est activé dans Supabase.");
+        setError(enrollError ? describeAuthError(enrollError) : "Impossible de démarrer la configuration.");
         return;
       }
       setFactorId(data.id);
@@ -137,7 +161,7 @@ function EnrollStep() {
     setError("");
     const { error: verifyError } = await supabase.auth.mfa.challengeAndVerify({ factorId, code });
     if (verifyError) {
-      setError("Code invalide. Vérifie l'heure de ton téléphone et réessaie.");
+      setError(verifyError.code === "mfa_verification_failed" ? "Code invalide. Vérifie l'heure de ton téléphone et réessaie." : describeAuthError(verifyError));
       setSubmitting(false);
       return;
     }
@@ -189,7 +213,7 @@ function VerifyStep() {
     }
     const { error: verifyError } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code });
     if (verifyError) {
-      setError("Code invalide ou expiré.");
+      setError(verifyError.code === "mfa_verification_failed" ? "Code invalide ou expiré." : describeAuthError(verifyError));
       setCode("");
       setSubmitting(false);
       return;

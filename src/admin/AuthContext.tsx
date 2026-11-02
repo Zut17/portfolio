@@ -23,6 +23,8 @@ type AuthState = {
   step: AuthStep;
   isAdmin: boolean;
   loading: boolean;
+  /** Erreur survenue après la connexion (niveau MFA, facteurs, is_admin). */
+  authError: string;
   refresh: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState<AuthStep>("credentials");
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState("");
 
   const evaluate = useCallback(async (current: Session | null) => {
     if (!current) {
@@ -44,13 +47,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     setLoading(true);
+    setAuthError("");
     try {
       const { data: aal, error: aalError } =
         await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
       if (aalError) throw aalError;
 
       if (aal.currentLevel === "aal2") {
-        const { data } = await supabase.rpc("is_admin");
+        const { data, error: rpcError } = await supabase.rpc("is_admin");
+        if (rpcError) throw new Error(`is_admin() : ${rpcError.message}`);
         setIsAdmin(data === true);
         setStep("ready");
         return;
@@ -61,9 +66,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (factorsError) throw factorsError;
       setIsAdmin(false);
       setStep(factors.totp.length > 0 ? "verify" : "enroll");
-    } catch {
+    } catch (error) {
+      // On déconnecte pour repartir proprement, mais on AFFICHE la cause.
+      setAuthError(
+        `Connexion acceptée, mais l'étape suivante a échoué : ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
       setIsAdmin(false);
       setStep("credentials");
+      void supabase.auth.signOut({ scope: "local" });
     } finally {
       setLoading(false);
     }
@@ -99,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, step, isAdmin, loading, refresh, signOut }}
+      value={{ session, step, isAdmin, loading, authError, refresh, signOut }}
     >
       {children}
     </AuthContext.Provider>
