@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { KeyRound, LogIn, ShieldCheck } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { supabaseConfigured, supabaseUrl } from "../lib/supabaseConfig";
@@ -48,7 +48,9 @@ function describeAuthError(error: { message?: string; code?: string; status?: nu
   else if (code === "user_banned") hint = "Ce compte est bloqué dans Supabase.";
   else if (code.startsWith("mfa_") && code.endsWith("_not_enabled"))
     hint = "La double authentification TOTP est désactivée dans Supabase (Authentication → Multi-Factor).";
-  else if (error.name === "AuthRetryableFetchError" || /failed to fetch|networkerror|load failed/i.test(error.message ?? ""))
+  else if (/site url/i.test(error.message ?? ""))
+    hint = "La « Site URL » du projet Supabase est mal formée (Authentication → URL Configuration).";
+  else if (!error.status || /failed to fetch|networkerror|load failed/i.test(error.message ?? ""))
     hint = `Requête vers Supabase (${hostOf(supabaseUrl)}) bloquée ou impossible : bloqueur de publicités, réseau ou variables Vercel.`;
   else hint = "Erreur Supabase.";
   return `${hint} Détail : ${details}`;
@@ -143,6 +145,9 @@ function EnrollStep() {
       const { data, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: "totp",
         friendlyName: "Portfolio admin",
+        // Nom affiché dans l'app d'authentification ; évite aussi de dépendre
+        // de la « Site URL » du projet Supabase pour construire l'émetteur.
+        issuer: "Portfolio HWZ",
       });
       if (cancelled) return;
       if (enrollError || !data) {
@@ -242,6 +247,9 @@ function VerifyStep() {
 
 export default function Login() {
   const { step, isAdmin, loading, signOut } = useAuth();
+  const location = useLocation();
+  const from = (location.state as { from?: string } | null)?.from;
+  const target = from && from !== "/login" ? from : ADMIN_HOME;
 
   if (!supabaseConfigured) {
     return (
@@ -263,7 +271,7 @@ export default function Login() {
     );
   }
 
-  if (step === "ready" && isAdmin) return <Navigate to={ADMIN_HOME} replace />;
+  if (step === "ready" && isAdmin) return <Navigate to={target} replace />;
   if (step === "enroll") return <EnrollStep />;
   if (step === "verify") return <VerifyStep />;
   if (step === "ready") {

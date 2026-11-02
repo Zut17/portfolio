@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Link2, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { Link2, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import Section from "./Section";
 import { useContent } from "../content/ContentContext";
 import { supabase, supabaseConfigured } from "../lib/supabase";
@@ -82,21 +82,21 @@ export default function Contact() {
  
   const links = [
     contact.email && { icon: Mail, label: contact.email, href: `mailto:${contact.email}` },
+    contact.phone && { icon: Phone, label: contact.phone, href: `tel:${contact.phone.replace(/[^\d+]/g, "")}` },
     contact.whatsapp && { icon: MessageCircle, label: "WhatsApp", href: `https://wa.me/${contact.whatsapp}` },
     contact.linkedin && validHttpUrl(contact.linkedin) && { icon: Link2, label: "LinkedIn", href: contact.linkedin },
     contact.github && validHttpUrl(contact.github) && { icon: Link2, label: "GitHub", href: contact.github },
   ].filter(Boolean) as { icon: typeof Mail; label: string; href: string }[];
  
   return (
-    <Section id="contact" index="05" title={t("contact.title")}>
+    <Section id="contact" title={t("contact.title")} intro={t("contact.intro")}>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="bento min-w-0 p-6 sm:p-8">
           <p className="text-2xl font-semibold leading-tight tracking-tight md:text-3xl">{t("contact.heading")}</p>
-          <p className="mt-3 text-muted">{t("contact.intro")}</p>
           <ul className="mt-8 space-y-2">
             {links.map(({ icon: Icon, label: linkLabel, href }) => (
               <li key={linkLabel}>
-                <a href={href} target="_blank" rel="noopener noreferrer" className="flex min-h-12 items-center gap-3 rounded-xl border border-border p-2.5 pr-4 text-base font-medium transition hover:bg-foreground/[0.05]">
+                <a href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="flex min-h-12 items-center gap-3 rounded-xl border border-border p-2.5 pr-4 text-base font-medium transition hover:bg-foreground/[0.05]">
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-background text-foreground"><Icon size={16} /></span>
                   <span className="min-w-0 break-words">{linkLabel}</span>
                 </a>

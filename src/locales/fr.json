@@ -8,7 +8,7 @@
     "backToTop": "Retour en haut"
   },
   "nav": {
-    "home": "Accueil",
+    "about": "À propos",
     "projects": "Projets",
     "journey": "Parcours",
     "skills": "Compétences",
@@ -22,6 +22,25 @@
     "cv": "Télécharger mon CV",
     "photoAlt": "Portrait de {{name}}"
   },
+  "hero": {
+    "social": "Me retrouver",
+    "highlights": "Repères clés",
+    "now": "Actuellement",
+    "degree": "Dernier diplôme",
+    "certification": "Certification",
+    "work": "Dernière expérience"
+  },
+  "about": {
+    "title": "À propos",
+    "intro": "Qui je suis, d'où je viens et ce qui me motive.",
+    "facts": "Informations",
+    "location": "Localisation",
+    "studies": "Formation",
+    "email": "Email",
+    "phone": "Téléphone",
+    "languages": "Langues",
+    "interests": "Centres d'intérêt"
+  },
   "projects": {
     "title": "Projets",
     "status": {
@@ -32,14 +51,39 @@
     "code": "Code source",
     "demo": "Démo",
     "coverAlt": "Aperçu du projet {{title}}",
-    "newTab": "(nouvel onglet)"
+    "newTab": "(nouvel onglet)",
+    "intro": "Une sélection de projets académiques, professionnels et personnels.",
+    "filter": "Filtrer les projets",
+    "all": "Tous",
+    "soon": "Lien bientôt disponible",
+    "category": {
+      "web": "Web",
+      "mobile": "Mobile",
+      "desktop": "Desktop",
+      "game": "Jeu vidéo",
+      "other": "Autre"
+    },
+    "count": "{{count}} projet(s)"
   },
   "journey": {
     "title": "Parcours",
     "kind": {
       "education": "Formation",
       "work": "Expérience"
+    },
+    "intro": "Mon cursus dans l'ordre chronologique : les étapes obtenues et celle en cours.",
+    "progress": "Progression du parcours",
+    "summary": "{{done}} étape(s) validée(s) · {{current}} en cours",
+    "status": {
+      "done": "Obtenu",
+      "in_progress": "En cours"
     }
+  },
+  "certifications": {
+    "title": "Certifications",
+    "intro": "Formations certifiantes suivies en complément de mon cursus.",
+    "verify": "Vérifier la certification",
+    "newTab": "(nouvel onglet)"
   },
   "skills": {
     "title": "Compétences",
@@ -48,11 +92,21 @@
       "frontend": "Frontend",
       "desktop": "Applications de bureau",
       "tools": "Outils"
-    }
+    },
+    "intro": "Les langages, frameworks et outils que j'utilise pour concevoir et livrer mes projets."
   },
   "services": {
     "title": "Services",
     "intro": "Je suis disponible pour des missions freelance. Voici ce que je peux vous apporter."
+  },
+  "goals": {
+    "title": "Objectifs",
+    "intro": "Où j'en suis et où je vais.",
+    "horizon": {
+      "past": "Étape franchie",
+      "now": "Aujourd'hui",
+      "next": "Prochaine étape"
+    }
   },
   "contact": {
     "title": "Contact",
@@ -72,6 +126,7 @@
     "rateLimited": "Vous avez envoyé plusieurs messages récemment. Réessayez dans quelques minutes."
   },
   "footer": {
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "links": "Liens"
   }
 }

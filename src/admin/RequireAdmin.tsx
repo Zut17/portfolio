@@ -1,9 +1,10 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { ADMIN } from "../lib/adminPath";
 
 export default function RequireAdmin() {
   const { session, isAdmin, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -12,6 +13,6 @@ export default function RequireAdmin() {
       </div>
     );
   }
-  if (!session || !isAdmin) return <Navigate to={`${ADMIN}/login`} replace />;
+  if (!session || !isAdmin) return <Navigate to={`${ADMIN}/login`} replace state={{ from: location.pathname }} />;
   return <Outlet />;
 }

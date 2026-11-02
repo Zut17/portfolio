@@ -1,6 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
 import {
+  Award,
   ExternalLink,
+  Target,
   FolderOpen,
   GraduationCap,
   Layers,
@@ -22,7 +24,9 @@ const links = [
   { to: `${ADMIN}/projets`, label: "Projets", icon: FolderOpen, end: false },
   { to: `${ADMIN}/competences`, label: "Compétences", icon: Wrench, end: false },
   { to: `${ADMIN}/parcours`, label: "Parcours", icon: GraduationCap, end: false },
+  { to: `${ADMIN}/certifications`, label: "Certifications", icon: Award, end: false },
   { to: `${ADMIN}/services`, label: "Services", icon: Layers, end: false },
+  { to: `${ADMIN}/objectifs`, label: "Objectifs", icon: Target, end: false },
   { to: `${ADMIN}/messages`, label: "Messages", icon: Mail, end: false },
 ];
  

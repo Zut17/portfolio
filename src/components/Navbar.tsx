@@ -7,13 +7,15 @@ import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import type { Lang } from "../i18n";
 
-const items = ["home", "projects", "journey", "skills", "services", "contact"];
+const items = ["about", "projects", "journey", "skills", "services", "contact"];
+// « home » est observé pour qu'aucun lien ne soit actif en haut de page.
+const observed = ["home", ...items];
 
 export default function Navbar({ lang }: { lang: Lang }) {
   const { t } = useTranslation();
   const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
-  const active = useActiveSection(items);
+  const active = useActiveSection(observed);
   const other: Lang = lang === "fr" ? "en" : "fr";
   const fr = lang === "fr";
 

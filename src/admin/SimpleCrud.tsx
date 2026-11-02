@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useRows } from "./useRows";
+import ImageUpload from "./ImageUpload";
 import { SortableItem, SortableList } from "./SortableList";
 import {
   btnGhost,
@@ -14,8 +15,16 @@ import {
 export interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "textarea" | "select";
+  type: "text" | "textarea" | "select" | "url" | "image";
   options?: { value: string; label: string }[];
+  hint?: string;
+  /** Champ obligatoire (texte non vide). */
+  required?: boolean;
+  /** Occupe toute la largeur du formulaire. */
+  full?: boolean;
+  /** Dossier de stockage et ratio de recadrage (type « image »). */
+  folder?: string;
+  cropAspect?: number;
 }
 
 type Row = { id: string; sort_order: number } & Record<string, unknown>;
@@ -47,7 +56,7 @@ export default function SimpleCrud({
   const [rowToDelete, setRowToDelete] = useState<Row | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const set = (key: string, value: string) =>
+  const set = (key: string, value: string | null) =>
     setEditing((previous) => (previous ? { ...previous, [key]: value } : previous));
 
   const save = async (event: FormEvent) => {
@@ -60,7 +69,13 @@ export default function SimpleCrud({
       sort_order: editing.sort_order,
     };
     fields.forEach((field) => {
-      payload[field.key] = editing[field.key] ?? "";
+      const value = editing[field.key];
+      if (field.type === "image" || field.type === "url") {
+        // Champs facultatifs : chaîne vide => null.
+        payload[field.key] = typeof value === "string" && value.trim() ? value.trim() : null;
+      } else {
+        payload[field.key] = typeof value === "string" ? value.trim() : value ?? "";
+      }
     });
 
     try {
@@ -103,8 +118,19 @@ export default function SimpleCrud({
         </h1>
         <div className="grid gap-4 md:grid-cols-2">
           {fields.map((field) => (
-            <Field key={field.key} label={field.label}>
-              {field.type === "textarea" ? (
+            <div key={field.key} className={field.full || field.type === "image" ? "md:col-span-2" : undefined}>
+            <Field label={field.label} hint={field.hint}>
+              {field.type === "image" ? (
+                <div className="max-w-sm">
+                  <ImageUpload
+                    value={(editing[field.key] as string | null) ?? null}
+                    onChange={(url) => set(field.key, url)}
+                    folder={field.folder ?? "misc"}
+                    aspect="aspect-[4/3]"
+                    cropAspect={field.cropAspect}
+                  />
+                </div>
+              ) : field.type === "textarea" ? (
                 <textarea
                   rows={5}
                   value={String(editing[field.key] ?? "")}
@@ -125,12 +151,15 @@ export default function SimpleCrud({
                 </select>
               ) : (
                 <input
+                  type={field.type === "url" ? "url" : "text"}
+                  required={field.required}
                   value={String(editing[field.key] ?? "")}
                   onChange={(event) => set(field.key, event.target.value)}
                   className={inputClass}
                 />
               )}
             </Field>
+            </div>
           ))}
         </div>
         {saveError && (

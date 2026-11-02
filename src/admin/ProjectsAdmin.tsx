@@ -11,6 +11,7 @@ import {
 import { supabase } from "../lib/supabase";
 import { removeImage } from "../lib/storage";
 import type { ProjectRow, ProjectStatus } from "../lib/db";
+import type { ProjectCategory } from "../types";
 import ImageUpload from "./ImageUpload";
 import {
   btnGhost,
@@ -26,6 +27,14 @@ const statusLabels: Record<ProjectStatus, string> = {
   personal: "Projet personnel",
 };
 
+const categoryLabels: Record<ProjectCategory, string> = {
+  web: "Web",
+  mobile: "Mobile",
+  desktop: "Desktop",
+  game: "Jeu vidéo",
+  other: "Autre",
+};
+
 const emptyProject = (order: number): ProjectRow => ({
   id: "",
   slug: "",
@@ -35,6 +44,7 @@ const emptyProject = (order: number): ProjectRow => ({
   role_fr: "",
   role_en: "",
   status: "in_progress",
+  category: "web",
   tech_stack: [],
   demo_url: null,
   repo_url: null,
@@ -324,6 +334,7 @@ function ProjectForm({
       role_fr: form.role_fr,
       role_en: form.role_en,
       status: form.status,
+      category: form.category ?? "web",
       tech_stack: techText
         .split(",")
         .map((item) => item.trim())
@@ -453,6 +464,21 @@ function ProjectForm({
             {(Object.keys(statusLabels) as ProjectStatus[]).map((status) => (
               <option key={status} value={status}>
                 {statusLabels[status]}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label="Catégorie" hint="Sert aux filtres de la section Projets.">
+          <select
+            value={form.category ?? "web"}
+            onChange={(event) =>
+              set("category", event.target.value as ProjectCategory)
+            }
+            className={inputClass}
+          >
+            {(Object.keys(categoryLabels) as ProjectCategory[]).map((category) => (
+              <option key={category} value={category}>
+                {categoryLabels[category]}
               </option>
             ))}
           </select>

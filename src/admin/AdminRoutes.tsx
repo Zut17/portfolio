@@ -13,6 +13,8 @@ const SkillsAdmin = lazy(() => import("./SkillsAdmin"));
 const TimelineAdmin = lazy(() => import("./TimelineAdmin"));
 const ServicesAdmin = lazy(() => import("./ServicesAdmin"));
 const MessagesAdmin = lazy(() => import("./MessagesAdmin"));
+const CertificationsAdmin = lazy(() => import("./CertificationsAdmin"));
+const GoalsAdmin = lazy(() => import("./GoalsAdmin"));
  
 function AdminLoading() {
   return <div className="py-10 text-muted">Chargement de l’administration…</div>;
@@ -54,6 +56,8 @@ export default function AdminRoutes() {
             <Route path="competences" element={<Lazy><SkillsAdmin /></Lazy>} />
             <Route path="parcours" element={<Lazy><TimelineAdmin /></Lazy>} />
             <Route path="services" element={<Lazy><ServicesAdmin /></Lazy>} />
+            <Route path="certifications" element={<Lazy><CertificationsAdmin /></Lazy>} />
+            <Route path="objectifs" element={<Lazy><GoalsAdmin /></Lazy>} />
             <Route path="messages" element={<Lazy><MessagesAdmin /></Lazy>} />
           </Route>
         </Route>

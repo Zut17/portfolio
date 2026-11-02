@@ -7,7 +7,9 @@ const tables = [
   { key: "projects", label: "Projets", to: `${ADMIN}/projets` },
   { key: "skills", label: "Compétences", to: `${ADMIN}/competences` },
   { key: "timeline", label: "Parcours", to: `${ADMIN}/parcours` },
+  { key: "certifications", label: "Certifications", to: `${ADMIN}/certifications` },
   { key: "services", label: "Services", to: `${ADMIN}/services` },
+  { key: "goals", label: "Objectifs", to: `${ADMIN}/objectifs` },
 ] as const;
 
 export default function Dashboard() {
@@ -17,21 +19,25 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       const result: Record<string, number> = {};
-      for (const t of tables) {
-        const { count, error } = await supabase
-          .from(t.key)
-          .select("*", { count: "exact", head: true });
-        if (error) {
-          setError(error.message);
-          return;
-        }
-        result[t.key] = count ?? 0;
-      }
-      const { count: unread } = await supabase
+      const failures: string[] = [];
+      // Requêtes en parallèle ; une table manquante n'empêche pas l'affichage des autres.
+      const responses = await Promise.all(
+        tables.map((t) =>
+          supabase.from(t.key).select("*", { count: "exact", head: true }),
+        ),
+      );
+      responses.forEach(({ count, error }, index) => {
+        const table = tables[index];
+        if (error) failures.push(`${table.label} : ${error.message}`);
+        else result[table.key] = count ?? 0;
+      });
+      const { count: unread, error: unreadError } = await supabase
         .from("messages")
         .select("*", { count: "exact", head: true })
         .eq("read", false);
-      result.messages = unread ?? 0;
+      if (unreadError) failures.push(`Messages : ${unreadError.message}`);
+      else result.messages = unread ?? 0;
+      if (failures.length) setError(failures.join(" — "));
       setCounts(result);
     })();
   }, []);

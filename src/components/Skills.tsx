@@ -25,11 +25,11 @@ export default function Skills() {
   if (groups.length === 0) return null;
 
   return (
-    <Section id="skills" index="03" title={t("skills.title")}>
+    <Section id="skills" title={t("skills.title")} intro={t("skills.intro")}>
       <div className="grid auto-rows-fr gap-5 md:grid-cols-2">
         {groups.map(({ key, icon: Icon, items }) => (
           <SpotlightCard key={key} className="p-6">
-            <div className="flex min-h-40 gap-5">
+            <div className="flex gap-5">
               <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border bg-accent/10 text-accent">
                 <Icon size={24} aria-hidden="true" />
               </span>

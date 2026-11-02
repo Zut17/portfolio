@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../lib/supabase";
 import { removeImage } from "../lib/storage";
-import type { ProfileRow } from "../lib/db";
+import type { LanguageRow, ProfileRow } from "../lib/db";
+import { Plus, Trash2 } from "lucide-react";
 import ImageUpload from "./ImageUpload";
 import PdfUpload from "./PdfUpload";
 import { btnPrimary, Field, inputClass } from "./ui";
@@ -21,7 +22,17 @@ const empty: ProfileRow = {
   photo_url: null,
   cv_url_fr: null,
   cv_url_en: null,
+  tagline_fr: "",
+  tagline_en: "",
+  phone: "",
+  interests_fr: "",
+  interests_en: "",
+  languages: [],
+  goal_fr: "",
+  goal_en: "",
 };
+
+const emptyLanguage: LanguageRow = { name_fr: "", name_en: "", level_fr: "", level_en: "" };
 
 function normalizeProfile(row: ProfileRow): ProfileRow {
   return {
@@ -32,6 +43,7 @@ function normalizeProfile(row: ProfileRow): ProfileRow {
     title_en: row.title_en ?? "",
     bio_fr: row.bio_fr ?? "",
     bio_en: row.bio_en ?? "",
+    languages: Array.isArray(row.languages) ? row.languages : [],
   };
 }
 
@@ -108,6 +120,21 @@ export default function ProfileAdmin() {
       photo_url: form.photo_url,
       cv_url_fr: form.cv_url_fr,
       cv_url_en: form.cv_url_en,
+      tagline_fr: clean(form.tagline_fr),
+      tagline_en: clean(form.tagline_en),
+      phone: clean(form.phone),
+      interests_fr: clean(form.interests_fr),
+      interests_en: clean(form.interests_en),
+      languages: (form.languages ?? [])
+        .map((language) => ({
+          name_fr: language.name_fr.trim(),
+          name_en: language.name_en.trim(),
+          level_fr: language.level_fr.trim(),
+          level_en: language.level_en.trim(),
+        }))
+        .filter((language) => language.name_fr || language.name_en),
+      goal_fr: clean(form.goal_fr),
+      goal_en: clean(form.goal_en),
       updated_at: new Date().toISOString(),
     };
 
@@ -191,7 +218,21 @@ export default function ProfileAdmin() {
             className={inputClass}
           />
         </Field>
-        <Field label="Présentation (français)">
+        <Field label="Accroche (français)" hint="Une phrase affichée sous ton titre, en haut de page.">
+          <input
+            value={form.tagline_fr ?? ""}
+            onChange={(event) => set("tagline_fr", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Accroche (anglais)">
+          <input
+            value={form.tagline_en ?? ""}
+            onChange={(event) => set("tagline_en", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Présentation (français)" hint="Texte de la section À propos.">
           <textarea
             rows={7}
             value={form.bio_fr}
@@ -277,6 +318,92 @@ export default function ProfileAdmin() {
           <input
             value={form.location ?? ""}
             onChange={(event) => set("location", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Téléphone" hint="Affiché tel quel (ex. : +237 6 00 00 00 00).">
+          <input
+            type="tel"
+            value={form.phone ?? ""}
+            onChange={(event) => set("phone", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Centres d'intérêt (français)">
+          <input
+            value={form.interests_fr ?? ""}
+            onChange={(event) => set("interests_fr", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Centres d'intérêt (anglais)">
+          <input
+            value={form.interests_en ?? ""}
+            onChange={(event) => set("interests_en", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+      </div>
+
+      <fieldset className="space-y-3 rounded-2xl border border-border p-4">
+        <legend className="px-2 text-sm font-medium">Langues</legend>
+        {(form.languages ?? []).length === 0 && (
+          <p className="text-sm text-muted">Aucune langue pour l'instant.</p>
+        )}
+        {(form.languages ?? []).map((language, index) => {
+          const update = (key: keyof LanguageRow, value: string) =>
+            set(
+              "languages",
+              (form.languages ?? []).map((item, i) => (i === index ? { ...item, [key]: value } : item)),
+            );
+          return (
+            <div key={index} className="grid items-end gap-2 sm:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+              <Field label="Langue (FR)">
+                <input value={language.name_fr} onChange={(e) => update("name_fr", e.target.value)} placeholder="Français" className={inputClass} />
+              </Field>
+              <Field label="Langue (EN)">
+                <input value={language.name_en} onChange={(e) => update("name_en", e.target.value)} placeholder="French" className={inputClass} />
+              </Field>
+              <Field label="Niveau (FR)">
+                <input value={language.level_fr} onChange={(e) => update("level_fr", e.target.value)} placeholder="Langue maternelle, C1…" className={inputClass} />
+              </Field>
+              <Field label="Niveau (EN)">
+                <input value={language.level_en} onChange={(e) => update("level_en", e.target.value)} placeholder="Native, C1…" className={inputClass} />
+              </Field>
+              <button
+                type="button"
+                aria-label={`Retirer la langue ${language.name_fr || index + 1}`}
+                onClick={() => set("languages", (form.languages ?? []).filter((_, i) => i !== index))}
+                className="mb-1 rounded-lg p-2.5 text-muted transition hover:text-accent"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          );
+        })}
+        <button
+          type="button"
+          onClick={() => set("languages", [...(form.languages ?? []), { ...emptyLanguage }])}
+          className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm transition hover:border-primary"
+        >
+          <Plus size={14} /> Ajouter une langue
+        </button>
+      </fieldset>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Ambition (français)" hint="Phrase d'introduction de la section Objectifs.">
+          <textarea
+            rows={3}
+            value={form.goal_fr ?? ""}
+            onChange={(event) => set("goal_fr", event.target.value)}
+            className={inputClass}
+          />
+        </Field>
+        <Field label="Ambition (anglais)">
+          <textarea
+            rows={3}
+            value={form.goal_en ?? ""}
+            onChange={(event) => set("goal_en", event.target.value)}
             className={inputClass}
           />
         </Field>

@@ -37,6 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState("");
+  // Vrai une fois la session enregistrée relue : évite de conclure « déconnecté »
+  // au rechargement d'une page de l'admin.
+  const [initialized, setInitialized] = useState(false);
 
   const evaluate = useCallback(async (current: Session | null) => {
     if (!current) {
@@ -82,7 +85,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    void supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    void supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setInitialized(true);
+    });
 
     // Pas d'appel Supabase « await » dans ce callback (risque de blocage) :
     // on met seulement la session à jour, l'évaluation se fait dans l'effet suivant.
@@ -94,10 +100,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const token = session?.access_token;
   useEffect(() => {
+    if (!initialized) return;
     void evaluate(session);
     // La réévaluation suit le jeton : il change après connexion et après vérification MFA.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token, evaluate]);
+  }, [token, initialized, evaluate]);
 
   const refresh = useCallback(async () => {
     const { data } = await supabase.auth.getSession();

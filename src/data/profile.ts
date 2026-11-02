@@ -8,6 +8,7 @@ export const bio: Localized = {
 export const timeline: TimelineItem[] = [
   {
     kind: "education",
+    status: "in_progress",
     title: {
       fr: "Bachelor Concepteur Développeur Web Full Stack (3e année)",
       en: "Bachelor in Full Stack Web Development (3rd year)",
@@ -20,6 +21,7 @@ export const timeline: TimelineItem[] = [
   },
   {
     kind: "work",
+    status: "done",
     title: { fr: "Stage académique", en: "Academic internship" },
     organization: "Zygnixis SARL",
     description: {
@@ -29,6 +31,7 @@ export const timeline: TimelineItem[] = [
   },
   {
     kind: "education",
+    status: "done",
     title: { fr: "DEC", en: "DEC" },
     organization: "Institut Universitaire de la Côte (IUC), Douala",
     description: { fr: "Diplôme obtenu.", en: "Diploma obtained." },

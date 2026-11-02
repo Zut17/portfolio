@@ -48,3 +48,4 @@ Les deux projets partagent `vercel.json` (réécritures SPA et en-têtes de séc
 2. `20261102120000_add_timeline_period.sql`
 3. `20261102130000_clean_rls_and_rate_limit.sql`
 4. `20261102140000_is_admin_require_mfa.sql` — **seulement après** avoir déployé l'administration et configuré l'application d'authentification.
+5. `20261102150000_portfolio_sections.sql` — accroche, téléphone, langues, centres d'intérêt, ambition, statut du parcours, catégorie des projets, tables `certifications` et `goals`.

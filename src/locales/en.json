@@ -8,7 +8,7 @@
     "backToTop": "Back to top"
   },
   "nav": {
-    "home": "Home",
+    "about": "About",
     "projects": "Projects",
     "journey": "Journey",
     "skills": "Skills",
@@ -22,6 +22,25 @@
     "cv": "Download my CV",
     "photoAlt": "Portrait of {{name}}"
   },
+  "hero": {
+    "social": "Find me on",
+    "highlights": "Key facts",
+    "now": "Currently",
+    "degree": "Latest degree",
+    "certification": "Certification",
+    "work": "Latest experience"
+  },
+  "about": {
+    "title": "About",
+    "intro": "Who I am, where I come from and what drives me.",
+    "facts": "Details",
+    "location": "Location",
+    "studies": "Education",
+    "email": "Email",
+    "phone": "Phone",
+    "languages": "Languages",
+    "interests": "Interests"
+  },
   "projects": {
     "title": "Projects",
     "status": {
@@ -32,14 +51,39 @@
     "code": "Source code",
     "demo": "Demo",
     "coverAlt": "Preview of the {{title}} project",
-    "newTab": "(opens in a new tab)"
+    "newTab": "(opens in a new tab)",
+    "intro": "A selection of academic, professional and personal projects.",
+    "filter": "Filter projects",
+    "all": "All",
+    "soon": "Link coming soon",
+    "category": {
+      "web": "Web",
+      "mobile": "Mobile",
+      "desktop": "Desktop",
+      "game": "Video game",
+      "other": "Other"
+    },
+    "count": "{{count}} project(s)"
   },
   "journey": {
     "title": "Journey",
     "kind": {
       "education": "Education",
       "work": "Experience"
+    },
+    "intro": "My studies in chronological order: completed steps and the one in progress.",
+    "progress": "Journey progress",
+    "summary": "{{done}} step(s) completed · {{current}} in progress",
+    "status": {
+      "done": "Completed",
+      "in_progress": "In progress"
     }
+  },
+  "certifications": {
+    "title": "Certifications",
+    "intro": "Certified training completed alongside my studies.",
+    "verify": "Verify the certification",
+    "newTab": "(opens in a new tab)"
   },
   "skills": {
     "title": "Skills",
@@ -48,11 +92,21 @@
       "frontend": "Frontend",
       "desktop": "Desktop applications",
       "tools": "Tools"
-    }
+    },
+    "intro": "The languages, frameworks and tools I use to design and ship my projects."
   },
   "services": {
     "title": "Services",
     "intro": "I am available for freelance work. Here is what I can offer you."
+  },
+  "goals": {
+    "title": "Goals",
+    "intro": "Where I stand and where I am heading.",
+    "horizon": {
+      "past": "Milestone reached",
+      "now": "Today",
+      "next": "Next step"
+    }
   },
   "contact": {
     "title": "Contact",
@@ -72,6 +126,7 @@
     "rateLimited": "You have sent several messages recently. Please try again in a few minutes."
   },
   "footer": {
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "links": "Links"
   }
 }
