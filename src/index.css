@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Sources explicites : le site (racine) et l'admin (racine admin/) partagent ce fichier. */
+@source "./";
  
 @custom-variant dark (&:where(.dark, .dark *));
  

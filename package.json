@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:admin": "vite --config vite.admin.config.ts",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "tsc -b && vite build",
+    "build:admin": "tsc -b && vite build --config vite.admin.config.ts",
     "typecheck": "tsc -b --pretty false",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:admin": "vite preview --config vite.admin.config.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "./AuthContext";
 import { useTheme } from "../hooks/useTheme";
-import { ADMIN } from "../lib/adminPath";
+import { ADMIN, ADMIN_HOME, SITE_URL } from "../lib/adminPath";
  
 const links = [
-  { to: ADMIN, label: "Tableau de bord", icon: LayoutDashboard, end: true },
+  { to: ADMIN_HOME, label: "Tableau de bord", icon: LayoutDashboard, end: true },
   { to: `${ADMIN}/profil`, label: "Profil", icon: User, end: false },
   { to: `${ADMIN}/projets`, label: "Projets", icon: FolderOpen, end: false },
   { to: `${ADMIN}/competences`, label: "Compétences", icon: Wrench, end: false },
@@ -71,7 +71,7 @@ export default function AdminLayout() {
  
           <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
             <a
-              href="/"
+              href={SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted transition hover:text-primary"

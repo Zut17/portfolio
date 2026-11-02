@@ -4,7 +4,7 @@ import { AuthProvider } from "./AuthContext";
 import RequireAdmin from "./RequireAdmin";
 import AdminLayout from "./AdminLayout";
 import Login from "./Login";
-import { ADMIN } from "../lib/adminPath";
+import { ADMIN_HOME } from "../lib/adminPath";
  
 const Dashboard = lazy(() => import("./Dashboard"));
 const ProfileAdmin = lazy(() => import("./ProfileAdmin"));
@@ -57,7 +57,7 @@ export default function AdminRoutes() {
             <Route path="messages" element={<Lazy><MessagesAdmin /></Lazy>} />
           </Route>
         </Route>
-        <Route path="*" element={<Navigate to={ADMIN} replace />} />
+        <Route path="*" element={<Navigate to={ADMIN_HOME} replace />} />
       </Routes>
     </AuthProvider>
   );

@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /gestion-x7k2q
 
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://williamzuteuportfolio.vercel.app/sitemap.xml
