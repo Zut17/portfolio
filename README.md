@@ -1,32 +1,42 @@
-# React + TypeScript + Vite
+# Portfolio — Henry William Zuteu
+ 
+Portfolio personnel bilingue français/anglais, construit avec React, TypeScript, Vite, Tailwind CSS, Framer Motion et Supabase.
+ 
+## Fonctionnalités
+ 
+- pages publiques `/fr` et `/en` ;
+- thème clair/sombre avec respect de `prefers-reduced-motion` ;
+- contenu éditable depuis l’espace admin ;
+- authentification Supabase et contrôle `is_admin` ;
+- projets, compétences, parcours, services et messages ;
+- validation locale du contact, fallback `mailto:` sans Supabase ;
+- métadonnées SEO, canonical, hreflang, Open Graph, JSON-LD et sitemap ;
+- headers de sécurité Vercel et pipeline CI lint/typecheck/build.
+ 
+## Installation
+ 
+```bash
+npm ci
+cp .env.example .env.local
+npm run dev
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Renseigner ensuite VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, VITE_SITE_URL et VITE_ADMIN_PATH. Ne jamais committer .env.local ni aucun mot de passe.
 
-Currently, two official plugins are available:
+Scripts
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+npm run preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Supabase et sécurité
+Le frontend utilise uniquement la clé publishable/anon. La protection réelle doit être assurée par Supabase : activer RLS sur toutes les tables, autoriser uniquement la lecture publique du contenu publié, limiter les insertions publiques de messages et réserver toutes les opérations d’administration à la fonction is_admin().
 
-## React Compiler
+Le honeypot et la validation du formulaire améliorent l’UX mais ne remplacent pas une protection serveur. En production, ajouter une Edge Function avec rate limiting et, si nécessaire, CAPTCHA ou email transactionnel.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Les fichiers CV/photo sont gérés depuis l’administration. Aucun bouton CV n’est affiché tant qu’aucun fichier n’a été configuré ; cela évite les liens cassés.
 
-## Expanding the Oxlint configuration
+SEO et déploiement
+Remplacer https://example.com dans public/sitemap.xml et public/robots.txt par le domaine réel, ou générer ces fichiers dans le pipeline de déploiement. Définir VITE_SITE_URL avec la même origine.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Le projet est prévu pour Vercel. Vérifier les règles RLS, les politiques Storage, les variables d’environnement Preview/Production et les sauvegardes Supabase avant publication.

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { FileText, Trash2, Upload } from "lucide-react";
 import { uploadPdf } from "../lib/storage";
 import { btnGhost } from "./ui";
-
+ 
 export default function PdfUpload({
   value,
   onChange,
@@ -15,7 +15,7 @@ export default function PdfUpload({
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-
+ 
   const onFile = async (file?: File) => {
     if (!file) return;
     setBusy(true);
@@ -33,7 +33,7 @@ export default function PdfUpload({
       if (input.current) input.current.value = "";
     }
   };
-
+ 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
@@ -41,7 +41,7 @@ export default function PdfUpload({
           <a
             href={value}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-primary hover:underline"
           >
             <FileText size={16} /> Voir le fichier

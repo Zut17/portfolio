@@ -6,20 +6,20 @@ import ProjectCover from "./ProjectCover";
 import { useLocalized } from "../hooks/useLocalized";
 import { useContent } from "../content/ContentContext";
 import type { ProjectStatus } from "../types";
-
+ 
 const statusStyle: Record<ProjectStatus, string> = {
   in_progress: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   deploying: "bg-primary/10 text-primary",
   personal: "bg-foreground/[0.06] text-muted",
 };
-
+ 
 export default function Projects() {
   const { t } = useTranslation();
   const l = useLocalized();
   const { projects } = useContent();
-
+ 
   return (
-    <Section id="projects" index="03" title={t("projects.title")}>
+    <Section id="projects" index="01" title={t("projects.title")}>
       <div className="grid gap-5">
         {projects.map((project, index) => (
           <SpotlightCard key={project.slug} className="p-5 md:p-6">
@@ -27,9 +27,10 @@ export default function Projects() {
               <ProjectCover
                 src={project.cover}
                 title={project.title}
-                className="aspect-video min-h-52 md:aspect-auto md:h-full"
+                alt={t("projects.coverAlt", { title: project.title })}
+                className="aspect-video w-full md:aspect-auto md:h-full md:min-h-52"
               />
-
+ 
               <div className="flex flex-col">
                 <div className="mb-3 flex items-center justify-between">
                   <span className="eyebrow">
@@ -43,7 +44,7 @@ export default function Projects() {
                     {t(`projects.status.${project.status}`)}
                   </span>
                 </div>
-
+ 
                 <h3 className="text-2xl font-semibold tracking-tight">
                   {project.title}
                 </h3>
@@ -53,7 +54,7 @@ export default function Projects() {
                 <p className="mt-3 flex-1 leading-relaxed text-muted">
                   {l(project.summary)}
                 </p>
-
+ 
                 {project.techStack.length > 0 && (
                   <ul className="mt-5 flex flex-wrap gap-2">
                     {project.techStack.map((tech) => (
@@ -63,27 +64,29 @@ export default function Projects() {
                     ))}
                   </ul>
                 )}
-
+ 
                 {(project.demoUrl || project.repoUrl) && (
                   <div className="mt-5 flex gap-5 border-t border-border pt-4">
                     {project.repoUrl && (
                       <a
                         href={project.repoUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-sm font-medium hover:text-primary"
                       >
-                        <Code size={14} /> Code
+                        <Code size={14} aria-hidden="true" /> {t("projects.code")}
+                        <span className="sr-only"> {project.title} {t("projects.newTab")}</span>
                       </a>
                     )}
                     {project.demoUrl && (
                       <a
                         href={project.demoUrl}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="flex items-center gap-1.5 text-sm font-medium hover:text-primary"
                       >
-                        <ExternalLink size={14} /> Demo
+                        <ExternalLink size={14} aria-hidden="true" /> {t("projects.demo")}
+                        <span className="sr-only"> {project.title} {t("projects.newTab")}</span>
                       </a>
                     )}
                   </div>

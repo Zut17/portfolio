@@ -10,7 +10,6 @@ export default function Section({
 }: {
   id: string;
   index?: string;
-  tone?: string;
   kicker?: string;
   title: string;
   children: ReactNode;

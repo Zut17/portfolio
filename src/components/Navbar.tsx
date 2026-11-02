@@ -7,7 +7,7 @@ import { useTheme } from "../hooks/useTheme";
 import { useActiveSection } from "../hooks/useActiveSection";
 import type { Lang } from "../i18n";
 
-const items = ["home", "about", "skills", "projects", "services", "contact"];
+const items = ["home", "projects", "journey", "skills", "services", "contact"];
 
 export default function Navbar({ lang }: { lang: Lang }) {
   const { t } = useTranslation();

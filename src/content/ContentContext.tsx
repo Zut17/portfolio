@@ -96,6 +96,7 @@ const toTimeline = (row: TimelineRow): TimelineItem => ({
   kind: row.kind,
   title: { fr: row.title_fr, en: row.title_en },
   organization: row.organization,
+  period: row.period ?? undefined,
   description: { fr: row.description_fr, en: row.description_en },
 });
 

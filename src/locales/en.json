@@ -1,37 +1,41 @@
 {
   "meta": {
     "title": "Henry William Zuteu | Full stack developer",
-    "description": "Portfolio of Henry William Zuteu, junior full stack web and mobile developer and analyst."
+    "description": "Portfolio of Henry William Zuteu, junior full stack web developer: React applications, Odoo modules and .NET software."
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "backToTop": "Back to top"
   },
   "nav": {
     "home": "Home",
-    "about": "About",
     "projects": "Projects",
+    "journey": "Journey",
     "skills": "Skills",
     "services": "Services",
     "contact": "Contact"
   },
   "home": {
     "available": "Open to opportunities",
-    "greeting": "Hi, I'm",
-    "role": "Junior Full Stack Web & Mobile Developer and Analyst",
-    "typed": [
-      "Web applications",
-      "Odoo modules and dashboards",
-      ".NET desktop applications"
-    ],
     "cta": "See my projects",
     "ctaContact": "Contact me",
     "cv": "Download my CV",
-    "stats": {
-      "projects": "featured projects",
-      "indicators": "indicators in the Camlait dashboard",
-      "internship": "company internship"
-    }
+    "photoAlt": "Portrait of {{name}}"
   },
-  "about": {
-    "title": "About",
-    "timeline": "Education and experience",
+  "projects": {
+    "title": "Projects",
+    "status": {
+      "in_progress": "In progress",
+      "deploying": "Deployment in progress",
+      "personal": "Personal project"
+    },
+    "code": "Source code",
+    "demo": "Demo",
+    "coverAlt": "Preview of the {{title}} project",
+    "newTab": "(opens in a new tab)"
+  },
+  "journey": {
+    "title": "Journey",
     "kind": {
       "education": "Education",
       "work": "Experience"
@@ -44,14 +48,6 @@
       "frontend": "Frontend",
       "desktop": "Desktop applications",
       "tools": "Tools"
-    }
-  },
-  "projects": {
-    "title": "Projects",
-    "status": {
-      "in_progress": "In progress",
-      "deploying": "Deployment in progress",
-      "personal": "Personal project"
     }
   },
   "services": {
@@ -69,10 +65,13 @@
     "sending": "Sending…",
     "sent": "Thank you! Your message has been sent.",
     "error": "The message could not be sent. Please try again or email me directly.",
-    "subjectPrefix": "Contact from the portfolio:"
+    "validationName": "Please enter a valid name.",
+    "validationEmail": "Please enter a valid email address.",
+    "validationMessage": "Your message must contain between 10 and 5000 characters.",
+    "subjectPrefix": "Contact from the portfolio:",
+    "rateLimited": "You have sent several messages recently. Please try again in a few minutes."
   },
   "footer": {
-    "rights": "All rights reserved.",
-    "top": "Back to top"
+    "rights": "All rights reserved."
   }
 }

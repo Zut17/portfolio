@@ -5,7 +5,7 @@ export default function TimelineAdmin() {
     <SimpleCrud
       table="timeline"
       title="Parcours"
-      subtitle="Formations et expériences affichées dans la section À propos."
+      subtitle="Formations et expériences affichées dans la section Parcours."
       newLabel="Nouvel élément"
       defaults={{ kind: "education" }}
       fields={[
@@ -19,6 +19,7 @@ export default function TimelineAdmin() {
           ],
         },
         { key: "organization", label: "Organisation", type: "text" },
+        { key: "period", label: "Période (ex. 2023 – 2026)", type: "text" },
         { key: "title_fr", label: "Titre (français)", type: "text" },
         { key: "title_en", label: "Titre (anglais)", type: "text" },
         {
@@ -35,7 +36,9 @@ export default function TimelineAdmin() {
       primary={(row) =>
         String(row.title_fr || row.title_en || "Sans titre")
       }
-      secondary={(row) => String(row.organization ?? "")}
+      secondary={(row) =>
+        [row.organization, row.period].filter(Boolean).join(" · ")
+      }
     />
   );
 }

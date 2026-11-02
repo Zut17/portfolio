@@ -25,6 +25,8 @@ export interface TimelineItem {
   kind: "education" | "work";
   title: Localized;
   organization: string;
+  /** Période libre, ex. « 2023 – 2026 » ou « juin – août 2026 ». */
+  period?: string;
   description: Localized;
 }
 

@@ -49,6 +49,7 @@ export interface TimelineRow {
   title_fr: string;
   title_en: string;
   organization: string;
+  period: string | null;
   description_fr: string;
   description_en: string;
   sort_order: number;

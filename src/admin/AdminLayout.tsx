@@ -15,7 +15,7 @@ import {
 import { useAuth } from "./AuthContext";
 import { useTheme } from "../hooks/useTheme";
 import { ADMIN } from "../lib/adminPath";
-
+ 
 const links = [
   { to: ADMIN, label: "Tableau de bord", icon: LayoutDashboard, end: true },
   { to: `${ADMIN}/profil`, label: "Profil", icon: User, end: false },
@@ -25,11 +25,11 @@ const links = [
   { to: `${ADMIN}/services`, label: "Services", icon: Layers, end: false },
   { to: `${ADMIN}/messages`, label: "Messages", icon: Mail, end: false },
 ];
-
+ 
 export default function AdminLayout() {
   const { session, signOut } = useAuth();
   const { theme, toggle } = useTheme();
-
+ 
   return (
     <div className="min-h-screen md:flex">
       <aside className="border-b border-border bg-card md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:border-b-0 md:border-r">
@@ -47,7 +47,7 @@ export default function AdminLayout() {
               {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
             </button>
           </div>
-
+ 
           <nav className="flex gap-1 overflow-x-auto md:flex-1 md:flex-col md:overflow-visible">
             {links.map(({ to, label, icon: Icon, end }) => (
               <NavLink
@@ -67,12 +67,12 @@ export default function AdminLayout() {
               </NavLink>
             ))}
           </nav>
-
+ 
           <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
             <a
               href="/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted transition hover:text-primary"
             >
               <ExternalLink size={14} /> Voir le site
@@ -87,7 +87,7 @@ export default function AdminLayout() {
           </div>
         </div>
       </aside>
-
+ 
       <main className="flex-1 p-6 md:p-10">
         <Outlet />
       </main>

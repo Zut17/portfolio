@@ -4,10 +4,8 @@ import { useTranslation } from "react-i18next";
 
 export default function BackToTop() {
   const [show, setShow] = useState(false);
-  const { i18n } = useTranslation();
-  const label = i18n.language.startsWith("fr")
-    ? "Retour en haut"
-    : "Back to top";
+  const { t } = useTranslation();
+  const label = t("a11y.backToTop");
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 600);
@@ -28,7 +26,7 @@ export default function BackToTop() {
           : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >
-      <ArrowUp size={20} />
+      <ArrowUp size={20} aria-hidden="true" />
     </a>
   );
 }
