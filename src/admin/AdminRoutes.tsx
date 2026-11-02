@@ -26,13 +26,19 @@ export default function AdminRoutes() {
   useEffect(() => {
     const previousTitle = document.title;
     document.title = "Administration";
-    const meta = document.createElement("meta");
-    meta.name = "robots";
+    let meta = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    const created = !meta;
+    const previousRobots = meta?.content ?? "";
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "robots";
+      document.head.appendChild(meta);
+    }
     meta.content = "noindex, nofollow";
-    document.head.appendChild(meta);
     return () => {
       document.title = previousTitle;
-      meta.remove();
+      if (created) meta.remove();
+      else meta.content = previousRobots;
     };
   }, []);
  

@@ -20,13 +20,14 @@ export default function Login() {
 
   if (!supabaseConfigured) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-6 text-center">
+      <main className="flex min-h-screen items-center justify-center px-6 text-center">
+        <h1 className="sr-only">Administration</h1>
         <p className="max-w-md text-sm text-muted">
           Configuration manquante : les variables VITE_SUPABASE_URL et
           VITE_SUPABASE_PUBLISHABLE_KEY ne sont pas définies sur cet
           environnement. Ajoute-les dans Vercel puis redéploie.
         </p>
-      </div>
+      </main>
     );
   }
 
@@ -45,7 +46,7 @@ export default function Login() {
   const denied = !loading && session && !isAdmin;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6">
+    <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-8">
         <h1 className="font-display text-2xl font-bold">
           Administration<span className="text-accent">.</span>
@@ -66,7 +67,9 @@ export default function Login() {
           </div>
         ) : (
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
+            <label htmlFor="login-email" className="sr-only">Email</label>
             <input
+              id="login-email"
               required
               type="email"
               autoComplete="username"
@@ -75,7 +78,9 @@ export default function Login() {
               placeholder="Email"
               className={field}
             />
+            <label htmlFor="login-password" className="sr-only">Mot de passe</label>
             <input
+              id="login-password"
               required
               type="password"
               autoComplete="current-password"
@@ -84,7 +89,7 @@ export default function Login() {
               placeholder="Mot de passe"
               className={field}
             />
-            {error && <p className="text-sm text-accent">{error}</p>}
+            {error && <p role="alert" className="text-sm text-accent">{error}</p>}
             <button
               type="submit"
               disabled={submitting}
@@ -95,6 +100,6 @@ export default function Login() {
           </form>
         )}
       </div>
-    </div>
+    </main>
   );
 }

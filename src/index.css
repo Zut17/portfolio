@@ -9,8 +9,10 @@
   --card: #f2f5f9;
   --card-2: #e1e8f1;
   --border: rgb(30 90 170 / 0.16);
-  --primary: #1478e0;
-  --accent: #1e90ff;
+  --primary: #0b66c3;
+  --accent: #0b66c3;
+  /* Fond des boutons pleins : contraste ≥ 4,5:1 avec le texte blanc (WCAG AA). */
+  --accent-strong: #0b66c3;
   --accent-soft: #3d9cf5;
   --glass-alpha: 90%;
   --shadow:
@@ -29,6 +31,7 @@
   --border: rgb(30 144 255 / 0.16);
   --primary: #1e90ff;
   --accent: #1e90ff;
+  --accent-strong: #0f6fd1;
   --accent-soft: #6ab7ff;
   --glass-alpha: 78%;
   --shadow:
@@ -200,7 +203,7 @@
   }
  
   .btn-primary {
-    background: var(--accent);
+    background: var(--accent-strong);
     color: #fff;
     box-shadow:
       0 1px 2px rgb(0 40 100 / 0.25),

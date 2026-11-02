@@ -40,6 +40,7 @@ export default function AdminLayout() {
               <span className="text-sm font-normal text-muted">admin</span>
             </span>
             <button
+              type="button"
               onClick={toggle}
               aria-label="Changer de thème"
               className="rounded-full border border-border p-2 transition hover:border-accent hover:text-accent"
@@ -79,6 +80,7 @@ export default function AdminLayout() {
             </a>
             <p className="truncate text-xs text-muted">{session?.user.email}</p>
             <button
+              type="button"
               onClick={signOut}
               className="flex items-center gap-2 text-muted transition hover:text-accent"
             >

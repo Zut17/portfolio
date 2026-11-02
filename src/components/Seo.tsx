@@ -48,12 +48,12 @@ export default function Seo({ lang }: { lang: Lang }) {
     setMeta("property", "og:title", current.title);
     setMeta("property", "og:description", current.description);
     setMeta("property", "og:url", url);
-    setMeta("property", "og:image", `${SITE_ORIGIN}/photo-placeholder.svg`);
+    setMeta("property", "og:image", `${SITE_ORIGIN}/og-image.png`);
     setMeta("property", "og:locale", lang === "fr" ? "fr_FR" : "en_US");
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", current.title);
     setMeta("name", "twitter:description", current.description);
-    setMeta("name", "twitter:image", `${SITE_ORIGIN}/photo-placeholder.svg`);
+    setMeta("name", "twitter:image", `${SITE_ORIGIN}/og-image.png`);
     setLink("canonical", url);
     setLink("alternate", `${SITE_ORIGIN}/fr`, { hreflang: "fr" });
     setLink("alternate", `${SITE_ORIGIN}/en`, { hreflang: "en" });
